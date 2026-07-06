@@ -225,3 +225,58 @@
   .tp-stats-overview { grid-template-columns: 1fr; }
   .tp-mc-body { padding: 1.5rem 1rem; }
 }
+
+/* Squad Section Styles */
+.tp-squad-section { margin-top: 3rem; }
+.tp-squad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.tp-player-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+}
+.tp-player-no {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  opacity: 0.8;
+  min-width: 35px;
+}
+.tp-player-info {
+  display: flex;
+  flex-direction: column;
+}
+.tp-player-name {
+  font-weight: 600;
+  color: var(--text-main);
+}
+.tp-player-role {
+  font-size: 0.75rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+.tp-coach-card {
+  margin-top: 1.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+  display: inline-block;
+}
+.tp-squad-hashtags {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: var(--primary);
+  font-weight: 600;
+}

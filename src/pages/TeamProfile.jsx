@@ -1,7 +1,8 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Shield, ArrowLeft, MapPin, Calendar, Clock, Trophy, Target, Zap } from 'lucide-react';
+import { Shield, ArrowLeft, MapPin, Calendar, Clock, Trophy, Target, Zap, Users } from 'lucide-react';
 import { TEAMS } from '../data/teams';
+import { SQUADS } from '../data/squads';
 import { useTournament } from '../context/TournamentContext';
 import './TeamProfile.css';
 
@@ -96,6 +97,33 @@ export default function TeamProfile() {
             </div>
           </div>
         </section>
+
+        {/* ── SQUAD ROSTER SECTION ──────────────────── */}
+        {SQUADS[team.name] && (
+          <section className="tp-squad-section">
+            <h2 className="section-h2"><Users size={20} style={{verticalAlign:'middle', marginRight: '8px'}}/>Squad Roster</h2>
+            <div className="tp-squad-grid">
+              {SQUADS[team.name].players.map((player, idx) => (
+                <div key={idx} className="tp-player-card glass">
+                  <div className="tp-player-no">{player.no}</div>
+                  <div className="tp-player-info">
+                    <span className="tp-player-name">{player.name}</span>
+                    {player.role && <span className="tp-player-role">{player.role}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {SQUADS[team.name].coach && (
+              <div className="tp-coach-card glass">
+                <strong>Head Coach:</strong> {SQUADS[team.name].coach}
+              </div>
+            )}
+            <div className="tp-squad-hashtags">
+              <span>#PlantMoreTrees</span>
+              <span>#KeepLangoGreen</span>
+            </div>
+          </section>
+        )}
 
         {/* ── RESULTS SECTION ──────────────────────── */}
         <section className="tp-results-section">
