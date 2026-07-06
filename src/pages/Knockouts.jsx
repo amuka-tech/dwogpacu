@@ -8,19 +8,18 @@ function MatchupBox({ fixture, result, title }) {
   const home = TEAMS[fixture.homeTeamId];
   const away = TEAMS[fixture.awayTeamId];
   
-  // Parse label for placeholders like "Winner Group A"
-  const homeLabel = fixture.homeTeamId ? home?.shortName : fixture.label?.split(' vs ')[0] || 'TBD';
-  const awayLabel = fixture.awayTeamId ? away?.shortName : fixture.label?.split(' vs ')[1] || 'TBD';
+  const homeLabel = home ? home.shortName : (fixture.homeTeamId || 'TBD');
+  const awayLabel = away ? away.shortName : (fixture.awayTeamId || 'TBD');
 
   return (
     <div className="matchup glass">
       <div className="matchup-header">{title}</div>
       <div className="matchup-team">
-        <span className={`team-name ${!fixture.homeTeamId ? 'text-muted' : ''}`}>{homeLabel}</span>
+        <span className={`team-name ${!home ? 'text-muted' : ''}`}>{homeLabel}</span>
         <span className="team-score">{result?.homeScore ?? '-'}</span>
       </div>
       <div className="matchup-team">
-        <span className={`team-name ${!fixture.awayTeamId ? 'text-muted' : ''}`}>{awayLabel}</span>
+        <span className={`team-name ${!away ? 'text-muted' : ''}`}>{awayLabel}</span>
         <span className="team-score">{result?.awayScore ?? '-'}</span>
       </div>
     </div>
@@ -30,9 +29,9 @@ function MatchupBox({ fixture, result, title }) {
 const Knockouts = () => {
   const { fixtures, results } = useTournament();
 
-  const qfLeg1 = fixtures.filter(f => f.matchDay === 'Quarter-Final');
-  const sfLeg1 = fixtures.filter(f => f.matchDay === 'Semi-Final (Leg 1)');
-  const final = fixtures.find(f => f.matchDay === 'The Grand Final');
+  const qf = fixtures.filter(f => f.day === 'Quarter Finals');
+  const sf = fixtures.filter(f => f.day === 'Semi Finals');
+  const final = fixtures.find(f => f.day === 'Final');
 
   return (
     <div className="knockouts-page animate-fade-in">
@@ -49,7 +48,7 @@ const Knockouts = () => {
             <div className="round quarter-finals">
               <h3 className="round-title">Quarter-Finals</h3>
               <div className="matchup-list">
-                {qfLeg1.map((f, i) => (
+                {qf.map((f, i) => (
                   <MatchupBox key={f.id} fixture={f} result={results[f.id]} title={`QF ${i + 1}`} />
                 ))}
               </div>
@@ -59,7 +58,7 @@ const Knockouts = () => {
             <div className="round semi-finals">
               <h3 className="round-title">Semi-Finals</h3>
               <div className="matchup-list">
-                {sfLeg1.map((f, i) => (
+                {sf.map((f, i) => (
                   <MatchupBox key={f.id} fixture={f} result={results[f.id]} title={`SF ${i + 1}`} />
                 ))}
               </div>
