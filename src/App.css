@@ -1,0 +1,30 @@
+#root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   FORM GUIDE PILLS
+   ========================================================================== */
+.form-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #fff;
+  text-transform: uppercase;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.form-w { background-color: var(--accent-green); }
+.form-d { background-color: var(--text-secondary); }
+.form-l { background-color: var(--accent-red); }
+
+/* ==========================================================================
+   UTILITY CLASSES
+   ========================================================================== */

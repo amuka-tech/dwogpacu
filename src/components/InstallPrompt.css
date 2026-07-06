@@ -1,0 +1,96 @@
+.install-prompt {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  border-top: 2px solid var(--accent-green);
+  padding: 1rem;
+  z-index: 10000;
+  box-shadow: 0 -4px 20px rgba(0, 255, 136, 0.3);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.install-prompt-content {
+  max-width: 600px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.install-icon {
+  color: var(--accent-green);
+  flex-shrink: 0;
+}
+
+.install-text {
+  flex: 1;
+  min-width: 200px;
+}
+
+.install-text h3 {
+  margin: 0 0 0.25rem 0;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.install-text p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.install-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.install-btn {
+  background: var(--accent-green);
+  color: var(--bg-main);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.install-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+}
+
+.dismiss-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid #444;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dismiss-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+@media (max-width: 640px) {
+  .install-prompt-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .install-actions {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,226 @@
+/* ── SCOREBOARD HEADER ── */
+.md-scoreboard {
+  position: relative;
+  min-height: 400px;
+  background: 
+    linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.8) 100%),
+    url('https://goalkick.qodeinteractive.com/wp-content/uploads/2024/05/single-team-a-img.jpg') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  padding: 4rem 0 2rem;
+  border-bottom: 2px solid var(--accent-primary);
+}
+.md-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255,255,255,0.05) 5px, rgba(255,255,255,0.05) 10px);
+  opacity: 0.5;
+}
+.md-scoreboard-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.md-back {
+  align-self: flex-start;
+}
+.btn-clear {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.btn-clear:hover { color: var(--accent-primary); }
+
+.md-meta {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.md-meta span { display: flex; align-items: center; gap: 0.5rem; }
+
+.md-teams {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3rem;
+}
+.md-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+.md-team-logo {
+  filter: drop-shadow(0 0 20px rgba(0,0,0,0.5));
+}
+.md-team-name {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  text-decoration: none;
+  text-align: center;
+  text-transform: uppercase;
+}
+.md-team-name:hover { color: var(--accent-primary); }
+
+.md-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  min-width: 200px;
+}
+.md-score {
+  font-family: var(--font-heading);
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  line-height: 1;
+}
+.md-dash { color: var(--text-muted); font-size: 3rem; }
+.md-time {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.md-ft {
+  font-weight: 800;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+.md-live-badge {
+  background: rgba(255, 0, 51, 0.2);
+  color: #ff0033;
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-full);
+  font-weight: 800;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255,0,51,0.5);
+}
+
+/* ── CONTENT ── */
+.md-content {
+  padding: 4rem 1.5rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+.md-section { max-width: 800px; margin: 0 auto; width: 100%; }
+
+/* ── TIMELINE ── */
+.md-timeline {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.md-timeline-line {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  background: var(--border-color);
+  transform: translateX(-50%);
+}
+.md-event {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.md-event-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.md-event.home-event .md-event-content:first-child { justify-content: flex-end; text-align: right; }
+.md-event.away-event .md-event-content:last-child { justify-content: flex-start; text-align: left; }
+.md-event-minute {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-primary);
+  border: 2px solid var(--accent-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  z-index: 2;
+  margin: 0 1rem;
+}
+.md-event-player { font-weight: 600; font-size: 1.1rem; }
+.md-event-icon { font-size: 1.2rem; }
+.card-icon {
+  display: inline-block;
+  width: 14px; height: 18px;
+  border-radius: 2px;
+}
+.card-icon.yellow { background: #facc15; }
+.card-icon.red { background: #ef4444; }
+
+/* ── LINEUPS ── */
+.md-lineups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.md-lineup {
+  background: var(--bg-secondary);
+  border-top-width: 4px;
+  border-top-style: solid;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+.md-lineup-title { font-size: 1.5rem; font-weight: 800; text-align: center; }
+.md-formation { text-align: center; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600; }
+.md-players { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.md-players li {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background: rgba(0,0,0,0.1);
+  border-radius: var(--radius-sm);
+}
+.md-shirt-num {
+  font-weight: 900;
+  color: var(--text-muted);
+  width: 24px; text-align: center;
+}
+.md-dummy-player { font-weight: 500; }
+
+@media (max-width: 768px) {
+  .md-teams { flex-direction: column; gap: 2rem; }
+  .md-score { font-size: 4rem; }
+  .md-lineups { grid-template-columns: 1fr; }
+}

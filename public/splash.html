@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DWOG PACU CUP</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #0a0a0a;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      font-family: 'Inter', system-ui, sans-serif;
+    }
+    .splash {
+      text-align: center;
+      animation: fadeIn 0.5s ease-out;
+    }
+    .logo {
+      width: 120px;
+      height: 120px;
+      background: linear-gradient(135deg, #16a34a, #059669);
+      border-radius: 20px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo img {
+      width: 80px;
+      height: 80px;
+    }
+    h1 {
+      color: #fff;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    p {
+      color: #888;
+      font-size: 14px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash">
+    <div class="logo">
+      <img src="/favicon.svg" alt="DWOG PACU" />
+    </div>
+    <h1>DWOG PACU CUP 2026</h1>
+    <p>Loading tournament data...</p>
+  </div>
+</body>
+</html>

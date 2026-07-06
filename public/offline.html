@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - DWOG PACU CUP</title>
+  <style>
+    body {
+      background: #0a0a0a;
+      color: #fff;
+      font-family: 'Inter', system-ui, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem;
+      margin: 0;
+    }
+    .offline-content h1 {
+      color: #16a34a;
+      margin-bottom: 1rem;
+    }
+    .offline-content p {
+      color: #888;
+      margin-bottom: 2rem;
+    }
+    .retry-btn {
+      background: #16a34a;
+      color: #0a0a0a;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .retry-btn:hover {
+      filter: brightness(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-content">
+    <h1>⚽ You're Offline</h1>
+    <p>Check your internet connection to view live scores</p>
+    <button class="retry-btn" onclick="window.location.reload()">Try Again</button>
+  </div>
+</body>
+</html>

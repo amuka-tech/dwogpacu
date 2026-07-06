@@ -1,0 +1,110 @@
+.knockouts-page {
+  padding: 2rem 0 6rem 0;
+}
+
+.bracket-wrapper {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+.bracket {
+  display: flex;
+  min-width: 900px;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.round {
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+}
+
+.round-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.matchup-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  flex-grow: 1;
+  gap: 2rem;
+}
+
+.quarter-finals .matchup-list {
+  height: 600px;
+}
+
+.semi-finals .matchup-list {
+  height: 600px;
+}
+
+.final .matchup-list {
+  height: 600px;
+  justify-content: center;
+}
+
+.matchup {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+}
+
+.final-matchup {
+  border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+}
+
+.matchup-header {
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.matchup-header.highlight {
+  background: rgba(255, 215, 0, 0.1);
+  color: var(--gold);
+}
+
+.matchup-team {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.matchup-team:last-child {
+  border-bottom: none;
+}
+
+.team-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.team-name.text-muted {
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 400;
+}
+
+.team-score {
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Connector Lines can be added here with ::after / ::before pseudo elements if desired, but flex layout provides clear separation */
