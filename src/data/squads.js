@@ -71,5 +71,28 @@ export const SQUADS = {
       { no: "04", name: "Odoch Emmanuel" }
     ],
     coach: "REV JIMMY MAX AJON"
+  },
+  "Erute South": {
+    players: [
+      { no: "25", name: "KYAMERA TONNY" },
+      { no: "19", name: "OMARA BOB" },
+      { no: "13", name: "FAZIL RAJAB" },
+      { no: "05", name: "OGWAL BRIAN" },
+      { no: "04", name: "OJOK SHADDY" },
+      { no: "03", name: "OROM HENRY" },
+      { no: "21", name: "OCEN EMMANUEL" },
+      { no: "08", name: "OGWAL ANDREA" },
+      { no: "20", name: "OONYU PAUL" },
+      { no: "10", name: "OKELLO ALLAN" },
+      { no: "17", name: "OKECH EMMANUEL" },
+      { no: "31", name: "OLWOL JESSE", role: "(GK)" },
+      { no: "14", name: "ALONG ERICK" },
+      { no: "23", name: "OKUJA INNOCENT" },
+      { no: "15", name: "ONGOM EMMANUEL" },
+      { no: "07", name: "OBIRA ROGERS" },
+      { no: "11", name: "OKOCHA STEPHEN" },
+      { no: "18", name: "MYANMAR OSCAR" }
+    ],
+    coach: "BOB OBIRA"
   }
 };
