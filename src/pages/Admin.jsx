@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useTournament } from '../context/TournamentContext';
 import { TEAMS } from '../data/teams';
+import { SQUADS } from '../data/squads';
 import { Lock, LogOut, Shield, Save, Plus, Trash2, CheckCircle, Clock, AlertCircle, Users } from 'lucide-react';
 import './Admin.css';
 
@@ -130,6 +131,9 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
   };
 
   const events = result?.events || [];
+  const selectedEventTeam = TEAMS[eventTeam];
+  const squadPlayers = selectedEventTeam && SQUADS[selectedEventTeam.name] ? SQUADS[selectedEventTeam.name].players : [];
+  const datalistId = `squad-list-${fixture.id}`;
 
   return (
     <div className="se-row glass">
@@ -268,7 +272,13 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
               onChange={e => setEventPlayer(e.target.value)}
               required
               className="ev-input-name"
+              list={datalistId}
             />
+            <datalist id={datalistId}>
+              {squadPlayers.map((p, idx) => (
+                <option key={idx} value={p.name} />
+              ))}
+            </datalist>
             <button type="submit" className="btn btn-primary"><Plus size={16} /> Add</button>
           </form>
         </div>
