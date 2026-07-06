@@ -2,46 +2,55 @@ import React, { createContext, useContext, useEffect, useState, useMemo } from '
 import { TEAMS, GROUPS } from '../data/teams';
 import { FIXTURES } from '../data/fixtures';
 import { calculateGroupStandings, getTopScorers, getAllCards } from '../utils/tournamentEngine';
-
-const INITIAL_RESULTS = {
-  "001": { homeScore: 3, awayScore: 0, isLive: false, liveMinute: "", events: [] },
-  "002": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] },
-  "003": { homeScore: 1, awayScore: 0, isLive: false, liveMinute: "", events: [] },
-  "004": { homeScore: 2, awayScore: 2, isLive: false, liveMinute: "", events: [] },
-  "005": { homeScore: 3, awayScore: 0, isLive: false, liveMinute: "", events: [] },
-  "006": { homeScore: 1, awayScore: 1, isLive: false, liveMinute: "", events: [] },
-  "007": { homeScore: 2, awayScore: 1, isLive: false, liveMinute: "", events: [] },
-  "008": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] },
-  "009": { homeScore: 1, awayScore: 2, isLive: false, liveMinute: "", events: [] }
-};
+import { supabase } from '../utils/supabase';
 
 const TournamentContext = createContext(null);
 
 export function TournamentProvider({ children }) {
-  const [results, setResults] = useState(INITIAL_RESULTS);
+  const [results, setResults] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Load from local storage
+  const fetchMatches = async () => {
+    try {
+      const { data, error } = await supabase.from('matches').select('*');
+      if (error) throw error;
+      const resultsMap = {};
+      data.forEach(match => {
+        resultsMap[match.id] = {
+          homeScore: match.home_score,
+          awayScore: match.away_score,
+          isLive: match.is_live,
+          events: match.events || [],
+          liveMinute: "", 
+        };
+      });
+      setResults(resultsMap);
+    } catch (err) {
+      console.error('Error fetching matches:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const adminStatus = localStorage.getItem('dwogpacu_admin');
     if (adminStatus === 'true') {
       setIsAdmin(true);
     }
 
-    const savedResults = localStorage.getItem('dwogpacu_results');
-    if (savedResults) {
-      try {
-        setResults({ ...INITIAL_RESULTS, ...JSON.parse(savedResults) });
-      } catch (err) {
-        console.error('Failed to parse local results');
-      }
-    }
-  }, []);
+    fetchMatches();
 
-  const saveResults = (newResults) => {
-    setResults(newResults);
-    localStorage.setItem('dwogpacu_results', JSON.stringify(newResults));
-  };
+    const channel = supabase.channel('public:matches')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload) => {
+        fetchMatches(); 
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const loginAdmin = async (password) => {
     if (password === 'dwogpacu2026') {
@@ -58,41 +67,81 @@ export function TournamentProvider({ children }) {
   };
 
   const updateMatchResult = async (matchId, homeScore, awayScore, isLive = false, liveMinute = null) => {
-    const newMatchData = {
-      ...(results[matchId] || {}),
-      homeScore,
-      awayScore,
-      isLive,
-      ...(liveMinute && { liveMinute })
-    };
-    saveResults({ ...results, [matchId]: newMatchData });
+    try {
+      const currentData = results[matchId] || { events: [] };
+      const newMatchData = { ...currentData, homeScore, awayScore, isLive, ...(liveMinute && { liveMinute }) };
+      setResults(prev => ({ ...prev, [matchId]: newMatchData }));
+      
+      await supabase.from('matches').upsert({
+        id: matchId,
+        home_score: homeScore,
+        away_score: awayScore,
+        is_live: isLive,
+        events: currentData.events || []
+      });
+    } catch(err) {
+      console.error("Failed to update result", err);
+    }
   };
 
   const removeMatchResult = async (matchId) => {
-    const next = { ...results };
-    delete next[matchId];
-    saveResults(next);
+    try {
+      setResults(prev => {
+        const next = { ...prev };
+        delete next[matchId];
+        return next;
+      });
+      await supabase.from('matches').delete().eq('id', matchId);
+    } catch(err) {
+      console.error("Failed to delete result", err);
+    }
   };
 
   const addMatchEvent = async (matchId, event) => {
-    const currentData = results[matchId] || { homeScore: 0, awayScore: 0, isLive: true };
-    const newEvents = [...(currentData.events || []), event];
-    saveResults({ ...results, [matchId]: { ...currentData, events: newEvents } });
+    try {
+      const currentData = results[matchId] || { homeScore: 0, awayScore: 0, isLive: true };
+      const newEvents = [...(currentData.events || []), event];
+      
+      setResults(prev => ({ ...prev, [matchId]: { ...currentData, events: newEvents } }));
+
+      await supabase.from('matches').upsert({
+        id: matchId,
+        home_score: currentData.homeScore,
+        away_score: currentData.awayScore,
+        is_live: currentData.isLive,
+        events: newEvents
+      });
+    } catch(err) {
+      console.error("Failed to add event", err);
+    }
   };
 
   const removeMatchEvent = async (matchId, eventId) => {
-    const currentData = results[matchId];
-    if (!currentData || !currentData.events) return;
-    const newEvents = currentData.events.filter(e => e.id !== eventId);
-    saveResults({ ...results, [matchId]: { ...currentData, events: newEvents } });
+    try {
+      const currentData = results[matchId];
+      if (!currentData || !currentData.events) return;
+      const newEvents = currentData.events.filter(e => e.id !== eventId);
+      
+      setResults(prev => ({ ...prev, [matchId]: { ...currentData, events: newEvents } }));
+
+      await supabase.from('matches').upsert({
+        id: matchId,
+        home_score: currentData.homeScore,
+        away_score: currentData.awayScore,
+        is_live: currentData.isLive,
+        events: newEvents
+      });
+    } catch(err) {
+      console.error("Failed to remove event", err);
+    }
   };
 
   const updateLineups = async (matchId, homeFormation, awayFormation, homeLineup, awayLineup) => {
     const currentData = results[matchId] || { homeScore: 0, awayScore: 0 };
-    saveResults({
-      ...results,
+    setResults(prev => ({
+      ...prev,
       [matchId]: { ...currentData, homeFormation, awayFormation, homeLineup, awayLineup }
-    });
+    }));
   };
 
   const standings = useMemo(() => calculateGroupStandings(FIXTURES, results), [results]);
@@ -120,7 +169,7 @@ export function TournamentProvider({ children }) {
       liveMatches,
       todaysFixtures,
       isAdmin,
-      loading: false,
+      loading,
       getResult,
       getFixture,
       loginAdmin,
