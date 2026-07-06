@@ -149,9 +149,26 @@ export function TournamentProvider({ children }) {
   const allCards = useMemo(() => getAllCards(results), [results]);
   
   const liveMatches = useMemo(() => FIXTURES.filter(f => results[f.id]?.isLive), [results]);
-  const todaysFixtures = useMemo(() => {
+  const relevantFixtures = useMemo(() => {
     const today = new Date().toISOString().slice(0, 10);
-    return FIXTURES.filter(f => f.isoDate === today);
+    const todayMatches = FIXTURES.filter(f => f.isoDate === today);
+    if (todayMatches.length > 0) return { title: "Today's Fixtures", matches: todayMatches };
+
+    const upcoming = FIXTURES.filter(f => f.isoDate > today);
+    if (upcoming.length > 0) {
+      const nextDate = upcoming[0].isoDate;
+      const nextMatches = upcoming.filter(f => f.isoDate === nextDate);
+      return { title: "Upcoming Fixtures", matches: nextMatches };
+    }
+
+    const past = [...FIXTURES].reverse().filter(f => f.isoDate < today);
+    if (past.length > 0) {
+      const lastDate = past[0].isoDate;
+      const lastMatches = past.filter(f => f.isoDate === lastDate);
+      return { title: "Recent Results", matches: lastMatches.reverse() };
+    }
+
+    return { title: "Fixtures", matches: [] };
   }, []);
 
   const getResult = (id) => results[id] || null;
@@ -167,7 +184,7 @@ export function TournamentProvider({ children }) {
       topScorers,
       allCards,
       liveMatches,
-      todaysFixtures,
+      relevantFixtures,
       isAdmin,
       loading,
       getResult,

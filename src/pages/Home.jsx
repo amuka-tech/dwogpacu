@@ -116,7 +116,7 @@ function MiniStandings({ group, rows }) {
 // ── Main Home Page ────────────────────────────────────────────
 export default function Home() {
   const navigate = useNavigate();
-  const { fixtures, results, liveMatches, todaysFixtures, standings } = useTournament();
+  const { fixtures, results, liveMatches, relevantFixtures, standings } = useTournament();
 
   const finalDate = '2026-08-02T15:00:00';
 
@@ -127,11 +127,6 @@ export default function Home() {
     }).length,
     [fixtures, results]
   );
-
-  const upcomingToday = todaysFixtures.filter(f => {
-    const r = results[f.id];
-    return !r || (r.homeScore === null && !r.isLive);
-  });
 
   return (
     <div className="home-page animate-fade-in">
@@ -152,7 +147,7 @@ export default function Home() {
             </p>
             <Countdown targetDate={finalDate} label="Until the Grand Final · August 2, 2026" />
             <div className="hero-ctas">
-              <Link to="/fixtures" className="btn btn-primary"><Zap size={18} /> Today's Fixtures</Link>
+              <Link to="/fixtures" className="btn btn-primary"><Zap size={18} /> Fixtures</Link>
               <Link to="/standings" className="btn btn-secondary"><Trophy size={18} /> View Standings</Link>
             </div>
           </div>
@@ -195,18 +190,18 @@ export default function Home() {
         </section>
       )}
 
-      {/* ── TODAY'S FIXTURES ─────────────────────── */}
+      {/* ── DYNAMIC FIXTURES ─────────────────────── */}
       <section className="section">
         <div className="container">
           <div className="section-title-row">
-            <h2 className="section-h2">Today's Fixtures</h2>
+            <h2 className="section-h2">{relevantFixtures.title}</h2>
             <Link to="/fixtures" className="see-all">All Matches <ChevronRight size={16} /></Link>
           </div>
-          {todaysFixtures.length === 0 ? (
-            <div className="empty-state glass">No matches scheduled for today.</div>
+          {relevantFixtures.matches.length === 0 ? (
+            <div className="empty-state glass">No matches found.</div>
           ) : (
             <div className="today-list">
-              {todaysFixtures.map(f => {
+              {relevantFixtures.matches.map(f => {
                 const r = results[f.id];
                 const home = TEAMS[f.homeTeamId];
                 const away = TEAMS[f.awayTeamId];
