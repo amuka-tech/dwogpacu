@@ -3,10 +3,24 @@ import { TEAMS, GROUPS } from '../data/teams';
 import { FIXTURES } from '../data/fixtures';
 import { calculateGroupStandings, getTopScorers, getAllCards } from '../utils/tournamentEngine';
 
+const INITIAL_RESULTS = {
+  "001": { homeScore: 3, awayScore: 0, isLive: false, liveMinute: "", events: [] },
+  "002": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] },
+  "003": { homeScore: 1, awayScore: 0, isLive: false, liveMinute: "", events: [] },
+  "004": { homeScore: 2, awayScore: 2, isLive: false, liveMinute: "", events: [] },
+  "005": { homeScore: 3, awayScore: 0, isLive: false, liveMinute: "", events: [] },
+  "006": { homeScore: 1, awayScore: 1, isLive: false, liveMinute: "", events: [] },
+  "007": { homeScore: 2, awayScore: 1, isLive: false, liveMinute: "", events: [] },
+  "008": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] },
+  "009": { homeScore: 1, awayScore: 2, isLive: true, liveMinute: "Second Half", events: [] },
+  "012": { homeScore: 0, awayScore: 0, isLive: true, liveMinute: "First Half", events: [] },
+  "013": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] }
+};
+
 const TournamentContext = createContext(null);
 
 export function TournamentProvider({ children }) {
-  const [results, setResults] = useState({});
+  const [results, setResults] = useState(INITIAL_RESULTS);
   const [isAdmin, setIsAdmin] = useState(false);
 
   // Load from local storage
@@ -19,7 +33,7 @@ export function TournamentProvider({ children }) {
     const savedResults = localStorage.getItem('dwogpacu_results');
     if (savedResults) {
       try {
-        setResults(JSON.parse(savedResults));
+        setResults({ ...INITIAL_RESULTS, ...JSON.parse(savedResults) });
       } catch (err) {
         console.error('Failed to parse local results');
       }
