@@ -194,8 +194,8 @@
   .standings-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
-  .hide-mobile { display: none; }
-  .team-full { display: none; }
-  .team-short { display: inline; }
-  .standings-table { min-width: unset; }
+  /* Keep all columns visible and allow horizontal scrolling */
+  .team-full { display: inline; }
+  .team-short { display: none; }
+  .standings-table { min-width: 600px; }
 }
