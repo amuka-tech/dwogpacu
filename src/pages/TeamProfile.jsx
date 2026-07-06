@@ -77,22 +77,22 @@ export default function TeamProfile() {
           <div className="tp-stats-overview">
             <div className="tp-stat-card">
               <Trophy className="tp-stat-icon" />
-              <div className="tp-stat-val">{stats.points}</div>
+              <div className="tp-stat-val">{stats.pts ?? 0}</div>
               <div className="tp-stat-lbl">Points</div>
             </div>
             <div className="tp-stat-card">
               <Target className="tp-stat-icon" />
-              <div className="tp-stat-val">{stats.gf} - {stats.ga}</div>
+              <div className="tp-stat-val">{stats.gf ?? 0} - {stats.ga ?? 0}</div>
               <div className="tp-stat-lbl">Goals (F - A)</div>
             </div>
             <div className="tp-stat-card">
               <Zap className="tp-stat-icon" />
-              <div className="tp-stat-val">{stats.played}</div>
+              <div className="tp-stat-val">{stats.p ?? 0}</div>
               <div className="tp-stat-lbl">Matches Played</div>
             </div>
             <div className="tp-stat-card">
               <Shield className="tp-stat-icon" />
-              <div className="tp-stat-val">{stats.won}</div>
+              <div className="tp-stat-val">{stats.w ?? 0}</div>
               <div className="tp-stat-lbl">Wins</div>
             </div>
           </div>
