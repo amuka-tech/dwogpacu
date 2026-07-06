@@ -34,7 +34,7 @@
   border-radius: var(--radius-full);
 }
 
-.table-scroll { overflow-x: auto; }
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
 
 .standings-table {
   width: 100%;
@@ -191,7 +191,7 @@
 
 /* Responsive */
 @media (max-width: 900px) {
-  .standings-grid { grid-template-columns: 1fr; }
+  .standings-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 768px) {
   /* Keep all columns visible and allow horizontal scrolling */
