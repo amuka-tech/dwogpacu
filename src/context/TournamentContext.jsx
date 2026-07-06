@@ -12,8 +12,8 @@ const INITIAL_RESULTS = {
   "006": { homeScore: 1, awayScore: 1, isLive: false, liveMinute: "", events: [] },
   "007": { homeScore: 2, awayScore: 1, isLive: false, liveMinute: "", events: [] },
   "008": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] },
-  "009": { homeScore: 1, awayScore: 2, isLive: true, liveMinute: "Second Half", events: [] },
-  "012": { homeScore: 0, awayScore: 0, isLive: true, liveMinute: "First Half", events: [] },
+  "009": { homeScore: 1, awayScore: 2, isLive: false, liveMinute: "", events: [] },
+  "012": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] },
   "013": { homeScore: 0, awayScore: 0, isLive: false, liveMinute: "", events: [] }
 };
 
