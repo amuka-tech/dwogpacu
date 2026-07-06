@@ -13,7 +13,6 @@ const Header = () => {
     { name: 'Home', path: '/' },
     { name: 'Groups', path: '/groups' },
     { name: 'Fixtures', path: '/fixtures' },
-    { name: 'Match Center', path: '/match-center' },
     { name: 'Standings', path: '/standings' },
     { name: 'Knockouts', path: '/knockouts' },
     { name: 'Stats', path: '/stats' },
