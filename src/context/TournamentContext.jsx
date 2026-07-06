@@ -152,20 +152,20 @@ export function TournamentProvider({ children }) {
   const relevantFixtures = useMemo(() => {
     const today = new Date().toISOString().slice(0, 10);
     const todayMatches = FIXTURES.filter(f => f.isoDate === today);
-    if (todayMatches.length > 0) return { title: "Today's Fixtures", matches: todayMatches };
+    if (todayMatches.length > 0) return { title: todayMatches[0].day, matches: todayMatches };
 
     const upcoming = FIXTURES.filter(f => f.isoDate > today);
     if (upcoming.length > 0) {
       const nextDate = upcoming[0].isoDate;
       const nextMatches = upcoming.filter(f => f.isoDate === nextDate);
-      return { title: "Upcoming Fixtures", matches: nextMatches };
+      return { title: nextMatches[0].day, matches: nextMatches };
     }
 
     const past = [...FIXTURES].reverse().filter(f => f.isoDate < today);
     if (past.length > 0) {
       const lastDate = past[0].isoDate;
       const lastMatches = past.filter(f => f.isoDate === lastDate);
-      return { title: "Recent Results", matches: lastMatches.reverse() };
+      return { title: lastMatches[0].day, matches: lastMatches.reverse() };
     }
 
     return { title: "Fixtures", matches: [] };
