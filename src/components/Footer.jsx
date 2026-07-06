@@ -20,10 +20,10 @@ const Footer = () => {
           <div className="footer-col">
             <h4>Quick Links</h4>
             <ul className="footer-links">
-              <li><a href="/fixtures">Fixtures & Results</a></li>
-              <li><a href="/standings">Group Standings</a></li>
-              <li><a href="/groups">Teams & Groups</a></li>
-              <li><a href="/info">Tournament Rules</a></li>
+              <li><a href="#/fixtures">Fixtures & Results</a></li>
+              <li><a href="#/standings">Group Standings</a></li>
+              <li><a href="#/groups">Teams & Groups</a></li>
+              <li><a href="#/info">Tournament Rules</a></li>
             </ul>
           </div>
           

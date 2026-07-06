@@ -24,7 +24,7 @@ const Header = () => {
     <header className="header glass">
       <div className="container header-container">
         <Link to="/" className="logo">
-          <img src="/favicon.svg" alt="DWOG PACU Logo" className="logo-icon" style={{ height: '36px', width: 'auto' }} />
+          <img src={`${import.meta.env.BASE_URL}favicon.svg`} alt="DWOG PACU Logo" className="logo-icon" style={{ height: '36px', width: 'auto' }} />
           <span className="logo-text">DWOG PACU <span className="text-gradient">CUP</span></span>
           {liveMatches.length > 0 && (
             <span className="header-live-badge">● {liveMatches.length} Live</span>
