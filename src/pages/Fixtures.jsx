@@ -34,7 +34,7 @@ function FixtureCard({ fixture, result }) {
 
       {isKnockout ? (
         <div className="fx-body knockout-body">
-          <div className="knockout-label">{fixture.label || fixture.matchDay}</div>
+          <div className="knockout-label">{fixture.label || fixture.day}</div>
         </div>
       ) : (
         <div className="fx-body">
@@ -103,7 +103,7 @@ function FixtureCard({ fixture, result }) {
 export default function Fixtures() {
   const { fixtures, results } = useTournament();
 
-  const [openDays, setOpenDays] = useState({ 'Match Day 1': true });
+  const [openDays, setOpenDays] = useState({ 'Match Day One': true });
   const [filterGroup, setFilterGroup] = useState('All');
   const [filterVenue, setFilterVenue] = useState('All');
   const [filterStatus, setFilterStatus] = useState('All');
@@ -112,11 +112,11 @@ export default function Fixtures() {
 
   const matchDays = useMemo(() => {
     const order = [
-      'Match Day 1','Match Day 2','Match Day 3','Match Day 4','Match Day 5',
-      'Quarter-Final','Semi-Final (Leg 1)','Semi-Final (Leg 2)',
-      'Third Place','The Final','Charity Match'
+      'Match Day One','Match Day Two','Match Day Three','Match Day Four','Match Day Five',
+      'Quarter Finals', 'Semi Finals',
+      'Final'
     ];
-    return order.filter(d => fixtures.some(f => f.matchDay === d));
+    return order.filter(d => fixtures.some(f => f.day === d));
   }, [fixtures]);
 
   const allTeamNames = useMemo(() => {
@@ -202,7 +202,7 @@ export default function Fixtures() {
         {/* Match Days */}
         <div className="fx-days">
           {matchDays.map(day => {
-            const dayFixtures = filtered.filter(f => f.matchDay === day);
+            const dayFixtures = filtered.filter(f => f.day === day);
             if (dayFixtures.length === 0) return null;
             const isOpen = openDays[day] !== false;
             const dayDate = dayFixtures[0]?.date;
