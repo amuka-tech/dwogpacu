@@ -299,30 +299,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── NEWS ─────────────────────────────────── */}
-      <section className="section news-section">
-        <div className="container">
-          <div className="section-title-row">
-            <h2 className="section-h2">Latest News</h2>
-          </div>
-          <div className="news-grid">
-            {[
-              { id:1, date:'July 6, 2026', cat:'Announcement', title:'DWOG PACU CUP 2026 Kicks Off Today at UTC Lira', snippet:'Match Day 1 is underway with 9 fixtures across UTC Lira and LTC. Follow live scores and standings on this page.' },
-              { id:2, date:'July 1, 2026', cat:'Tournament News', title:'Organizing Committee Issues Final Rules Update', snippet:'Chairman Bongo Patrick announced key updates: 5 substitutions allowed per match. Yellow card accumulation rules apply.' },
-              { id:3, date:'June 28, 2026', cat:'Venues', title:'UTC Lira & LTC Ready to Host DWOG PACU CUP', snippet:'Both venues have completed preparations. UTC Lira hosts marquee fixtures; LTC handles additional group stage games.' },
-            ].map(n => (
-              <article key={n.id} className="news-card glass">
-                <div className="news-cat">{n.cat}</div>
-                <h3 className="news-title">{n.title}</h3>
-                <p className="news-snippet">{n.snippet}</p>
-                <div className="news-footer">
-                  <span className="news-date"><Calendar size={14} />{n.date}</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
     </div>
   );
