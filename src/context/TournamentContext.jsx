@@ -150,7 +150,8 @@ export function TournamentProvider({ children }) {
   
   const liveMatches = useMemo(() => FIXTURES.filter(f => results[f.id]?.isLive), [results]);
   const relevantFixtures = useMemo(() => {
-    const today = new Date().toISOString().slice(0, 10);
+    const d = new Date();
+    const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     const todayMatches = FIXTURES.filter(f => f.isoDate === today);
     if (todayMatches.length > 0) return { title: todayMatches[0].day, matches: todayMatches };
 
