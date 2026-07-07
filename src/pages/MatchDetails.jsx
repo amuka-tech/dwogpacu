@@ -83,7 +83,7 @@ export default function MatchDetails() {
             <div className="md-center">
               {result.isLive && (
                 <div className="md-live-badge">
-                  <span className="live-dot" /> LIVE {result.liveMinute ? `| ${result.liveMinute}` : ''}
+                  <span className="live-dot" /> LIVE {result.liveMinute ? <span style={{ color: '#fff', marginLeft: '4px' }}>| {result.liveMinute}</span> : ''}
                 </div>
               )}
               {result.homeScore !== null ? (
