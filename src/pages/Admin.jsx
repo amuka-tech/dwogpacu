@@ -103,15 +103,24 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
   const handleLive = () => {
     const h = hs === '' ? 0 : Number(hs);
     const a = as === '' ? 0 : Number(as);
-    const currentlyLive = result?.isLive || false;
-    const nextLiveState = !currentlyLive;
     
-    onSetLive(fixture.id, h, a, liveMin, nextLiveState);
-    if (nextLiveState) {
-      toast.success('Match Marked as Live!');
-    } else {
-      toast.success('Live status removed.');
-    }
+    // Always set to live when this button is clicked
+    onSetLive(fixture.id, h, a, liveMin, true);
+    toast.success('Live match updated!');
+    
+    setHs(h);
+    setAs(a);
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleRemoveLive = () => {
+    const h = hs === '' ? 0 : Number(hs);
+    const a = as === '' ? 0 : Number(as);
+    
+    onSetLive(fixture.id, h, a, liveMin, false);
+    toast.success('Live status removed.');
+    
     setHs(h);
     setAs(a);
     setSaved(true);
@@ -206,11 +215,21 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
           className={`btn btn-live ${saved ? 'btn-saved' : ''}`}
           onClick={handleLive}
           disabled={!fixture.homeTeamId}
-          title={result?.isLive ? "Remove Live Status" : "Mark as Live"}
+          title={result?.isLive ? "Update Live Score/Minute" : "Mark as Live"}
           style={result?.isLive ? { background: 'var(--accent-tertiary)', color: '#fff', borderColor: 'var(--accent-tertiary)' } : {}}
         >
-          <Clock size={16} /> {result?.isLive ? 'End Live' : 'Live'}
+          <Clock size={16} /> {result?.isLive ? 'Update Live' : 'Live'}
         </button>
+        {result?.isLive && (
+          <button
+            className="btn btn-live"
+            onClick={handleRemoveLive}
+            title="Remove Live Status"
+            style={{ background: '#333', color: '#fff', borderColor: '#333' }}
+          >
+            End Live
+          </button>
+        )}
         <button
           className={`btn btn-save ${saved ? 'btn-saved' : ''}`}
           onClick={handleSave}
