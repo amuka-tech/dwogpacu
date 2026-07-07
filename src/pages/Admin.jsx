@@ -217,10 +217,9 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
               className="min-input"
             />
             <div className="quick-periods">
-              <button className="qp-btn" onClick={() => setLiveMin('1st Half')} title="First Half">1st Half</button>
-              <button className="qp-btn" onClick={() => setLiveMin('1H')} title="1H">1H</button>
-              <button className="qp-btn" onClick={() => setLiveMin('HT')} title="Half Time">HT</button>
-              <button className="qp-btn" onClick={() => setLiveMin('2H')} title="Second Half">2H</button>
+              <button className="qp-btn" onClick={() => setLiveMin('1st Half')} title="First Half">1H</button>
+              <button className="qp-btn" onClick={() => setLiveMin('Half Time')} title="Half Time">HT</button>
+              <button className="qp-btn" onClick={() => setLiveMin('2nd Half')} title="Second Half">2H</button>
             </div>
           </div>
           <button
