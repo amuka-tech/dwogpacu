@@ -22,7 +22,7 @@ export function TournamentProvider({ children }) {
           awayScore: match.away_score,
           isLive: match.is_live,
           events: match.events || [],
-          liveMinute: "", 
+          liveMinute: match.live_minute || "", 
         };
       });
       setResults(resultsMap);
@@ -69,7 +69,8 @@ export function TournamentProvider({ children }) {
   const updateMatchResult = async (matchId, homeScore, awayScore, isLive = false, liveMinute = null) => {
     try {
       const currentData = results[matchId] || { events: [] };
-      const newMatchData = { ...currentData, homeScore, awayScore, isLive, ...(liveMinute && { liveMinute }) };
+      const finalLiveMinute = liveMinute !== null ? liveMinute : currentData.liveMinute;
+      const newMatchData = { ...currentData, homeScore, awayScore, isLive, liveMinute: finalLiveMinute };
       setResults(prev => ({ ...prev, [matchId]: newMatchData }));
       
       await supabase.from('matches').upsert({
@@ -77,6 +78,7 @@ export function TournamentProvider({ children }) {
         home_score: homeScore,
         away_score: awayScore,
         is_live: isLive,
+        live_minute: finalLiveMinute,
         events: currentData.events || []
       });
     } catch(err) {
@@ -109,6 +111,7 @@ export function TournamentProvider({ children }) {
         home_score: currentData.homeScore,
         away_score: currentData.awayScore,
         is_live: currentData.isLive,
+        live_minute: currentData.liveMinute || null,
         events: newEvents
       });
     } catch(err) {
@@ -129,6 +132,7 @@ export function TournamentProvider({ children }) {
         home_score: currentData.homeScore,
         away_score: currentData.awayScore,
         is_live: currentData.isLive,
+        live_minute: currentData.liveMinute || null,
         events: newEvents
       });
     } catch(err) {
