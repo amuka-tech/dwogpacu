@@ -82,8 +82,11 @@ export default function MatchDetails() {
             {/* SCORE */}
             <div className="md-center">
               {result.isLive && (
-                <div className="md-live-badge">
-                  <span className="live-dot" /> LIVE {result.liveMinute ? <span style={{ color: '#fff', marginLeft: '4px' }}>| {result.liveMinute}</span> : ''}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.4rem' }}>
+                  <div className="md-live-badge">
+                    <span className="live-dot" /> LIVE
+                  </div>
+                  {result.liveMinute && <span style={{ color: '#fff', fontWeight: '800', fontSize: '0.9rem', letterSpacing: '0.05em' }}>{result.liveMinute}</span>}
                 </div>
               )}
               {result.homeScore !== null ? (

@@ -213,7 +213,8 @@ export default function Home() {
                   <div key={f.id} className={`today-card glass ${isDone ? 'done' : ''} ${isLive ? 'live' : ''}`} onClick={() => navigate(`/match/${f.id}`)} style={{cursor: 'pointer'}}>
                     <div className="today-meta">
                       <span className="badge badge-group">Group {f.group}</span>
-                      {isLive && <span className="badge badge-live">● LIVE {r.liveMinute ? <span style={{ color: '#fff', marginLeft: '4px' }}>| {r.liveMinute}</span> : ''}</span>}
+                      {isLive && <span className="badge badge-live">● LIVE</span>}
+                      {isLive && r.liveMinute && <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '0.85rem' }}>{r.liveMinute}</span>}
                       {isDone && <span className="badge badge-done">FT</span>}
                     </div>
                     <div className="today-teams">
