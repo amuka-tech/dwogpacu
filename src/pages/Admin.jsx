@@ -360,7 +360,8 @@ export default function Admin() {
     loginAdmin, 
     logoutAdmin, 
     fixtures, 
-    results, 
+    results,
+    liveMatches,
     updateMatchResult, 
     addMatchEvent, 
     removeMatchEvent, 
@@ -466,6 +467,29 @@ export default function Admin() {
             ))}
           </div>
         </div>
+
+        {/* Live Matches List */}
+        {liveMatches.length > 0 && (
+          <div className="se-list live-matches-list">
+            <div className="se-list-header live-header">
+              <span className="live-header-pulse">● ACTIVE LIVE MATCHES</span>
+              <span style={{ textAlign: 'center' }}>Teams & Score</span>
+              <span style={{ textAlign: 'right' }}>Actions</span>
+            </div>
+            {liveMatches.map(f => (
+              <MatchScoreEntry
+                key={`live-${f.id}`}
+                fixture={f}
+                result={results[f.id] || null}
+                onSave={handleSave}
+                onSetLive={handleSetLive}
+                onAddEvent={handleAddEvent}
+                onRemoveEvent={handleRemoveEvent}
+                onUpdateLineups={handleUpdateLineups}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Score Entry List */}
         <div className="se-list">
