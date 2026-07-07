@@ -37,7 +37,7 @@
   display: flex;
   align-items: center;
   background: 
-    linear-gradient(135deg, rgba(10,10,10,0.95) 0%, rgba(10,10,10,0.8) 50%, var(--team-color) 100%),
+    linear-gradient(135deg, rgba(11,24,0,0.95) 0%, rgba(11,24,0,0.8) 50%, var(--team-color) 100%),
     radial-gradient(ellipse at 70% 50%, var(--team-color) 0%, transparent 60%);
   padding-top: 100px;
   overflow: hidden;
