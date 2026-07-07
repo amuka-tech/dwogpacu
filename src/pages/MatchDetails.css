@@ -144,9 +144,10 @@
 .md-timeline-line {
   position: absolute;
   top: 0; bottom: 0; left: 50%;
-  width: 2px;
+  width: 4px;
   background: var(--border-color);
   transform: translateX(-50%);
+  border-radius: 4px;
 }
 .md-event {
   display: flex;
@@ -159,13 +160,26 @@
   align-items: center;
   gap: 1rem;
 }
-.md-event.home-event .md-event-content:first-child { justify-content: flex-end; text-align: right; }
-.md-event.away-event .md-event-content:last-child { justify-content: flex-start; text-align: left; }
+.md-event-content:not(.empty) {
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  padding: 0.75rem 1.25rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.md-event.home-event .md-event-content:not(.empty) { 
+  justify-content: flex-end; text-align: right; margin-right: 1.5rem;
+}
+.md-event.away-event .md-event-content:not(.empty) { 
+  justify-content: flex-start; text-align: left; margin-left: 1.5rem;
+}
 .md-event-minute {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   background: var(--bg-primary);
-  border: 2px solid var(--accent-primary);
+  border: 3px solid var(--accent-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -200,6 +214,20 @@
   padding: 2rem;
   display: flex;
   flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.md-lineup::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(0deg, rgba(255,255,255,0.02), rgba(255,255,255,0.02) 40px, transparent 40px, transparent 80px);
+  z-index: 0;
+  pointer-events: none;
+}
+.md-lineup > * {
+  position: relative;
+  z-index: 1;
 }
 .md-lineup-title { font-size: 1.5rem; font-weight: 800; text-align: center; }
 .md-formation { text-align: center; color: var(--text-muted); margin-bottom: 1.5rem; font-weight: 600; }
@@ -208,10 +236,15 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 0.5rem;
-  background: rgba(0,0,0,0.1);
-  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  background: rgba(20, 20, 20, 0.7);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+.md-players li:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,0,0,0.4); }
 .md-shirt-num {
   font-weight: 900;
   color: var(--text-muted);

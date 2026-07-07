@@ -66,10 +66,12 @@
   justify-content: center;
   width: 160px;
   height: 160px;
-  background: rgba(0,0,0,0.4);
+  background: rgba(30,30,30,0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: var(--radius-full);
-  box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  box-shadow: 0 0 40px var(--team-color);
 }
 .tp-title {
   font-size: clamp(3.5rem, 8vw, 6rem);
