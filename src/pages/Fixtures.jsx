@@ -28,7 +28,7 @@ function FixtureCard({ fixture, result }) {
         <span className="fx-num">Match #{fixture.matchNo}</span>
         <div className="fx-badges">
           {fixture.group && <span className="badge badge-group">Group {fixture.group}</span>}
-          <span className={`badge badge-status ${status}`}>{STATUS_LABELS[status]}</span>
+          <span className={`badge badge-status ${status}`}>{status === 'live' ? 'Live' + (result?.liveMinute ? ` | ${result.liveMinute}` : '') : STATUS_LABELS[status]}</span>
         </div>
       </div>
 

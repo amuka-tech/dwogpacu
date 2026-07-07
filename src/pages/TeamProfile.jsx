@@ -140,7 +140,7 @@ export default function TeamProfile() {
                   <article key={f.id} className="tp-match-card result-card" onClick={() => navigate(`/match/${f.id}`)} style={{cursor: 'pointer'}}>
                     <div className="tp-mc-header">
                       <span className="tp-mc-date"><Calendar size={14}/> {f.isoDate}</span>
-                      {r.isLive && <span className="badge badge-live">LIVE</span>}
+                      {r.isLive && <span className="badge badge-live">LIVE {r.liveMinute ? `| ${r.liveMinute}` : ''}</span>}
                     </div>
                     <div className="tp-mc-body">
                       <Link to={`/team/${home?.id}`} className="tp-mc-team home" style={{color: 'inherit', textDecoration: 'none'}} onClick={(e) => e.stopPropagation()}>
