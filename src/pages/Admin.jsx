@@ -90,17 +90,30 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
   }, [result]);
 
   const handleSave = () => {
-    if (hs === '' || as === '') return;
-    onSave(fixture.id, Number(hs), Number(as));
+    const h = hs === '' ? 0 : Number(hs);
+    const a = as === '' ? 0 : Number(as);
+    onSave(fixture.id, h, a);
     toast.success('Match Score Saved!');
+    setHs(h);
+    setAs(a);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
   const handleLive = () => {
-    if (hs === '' || as === '') return;
-    onSetLive(fixture.id, Number(hs), Number(as), liveMin);
-    toast.success('Match Marked as Live!');
+    const h = hs === '' ? 0 : Number(hs);
+    const a = as === '' ? 0 : Number(as);
+    const currentlyLive = result?.isLive || false;
+    const nextLiveState = !currentlyLive;
+    
+    onSetLive(fixture.id, h, a, liveMin, nextLiveState);
+    if (nextLiveState) {
+      toast.success('Match Marked as Live!');
+    } else {
+      toast.success('Live status removed.');
+    }
+    setHs(h);
+    setAs(a);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -193,9 +206,10 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
           className={`btn btn-live ${saved ? 'btn-saved' : ''}`}
           onClick={handleLive}
           disabled={!fixture.homeTeamId}
-          title="Mark as Live"
+          title={result?.isLive ? "Remove Live Status" : "Mark as Live"}
+          style={result?.isLive ? { background: 'var(--accent-tertiary)', color: '#fff', borderColor: 'var(--accent-tertiary)' } : {}}
         >
-          <Clock size={16} /> Live
+          <Clock size={16} /> {result?.isLive ? 'End Live' : 'Live'}
         </button>
         <button
           className={`btn btn-save ${saved ? 'btn-saved' : ''}`}
@@ -344,8 +358,8 @@ export default function Admin() {
     updateMatchResult(matchId, homeScore, awayScore, false, null);
   };
 
-  const handleSetLive = (matchId, homeScore, awayScore, liveMinute) => {
-    updateMatchResult(matchId, homeScore, awayScore, true, liveMinute);
+  const handleSetLive = (matchId, homeScore, awayScore, liveMinute, isLive) => {
+    updateMatchResult(matchId, homeScore, awayScore, isLive, liveMinute);
   };
 
   const handleAddEvent = (matchId, event) => {
