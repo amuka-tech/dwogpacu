@@ -374,10 +374,11 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-top: 3px solid var(--gold);
-  padding: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
   transition: transform 0.3s ease;
 }
 .news-card:hover { transform: translateY(-4px); }
@@ -401,12 +402,35 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .hero-title { font-size: 3rem; }
+  .hero-title { font-size: 2.8rem; }
   .countdown-grid { gap: 0.5rem; }
   .countdown-unit { min-width: 55px; padding: 0.75rem; }
   .countdown-num { font-size: 1.8rem; }
-  .hero-ctas { flex-direction: column; }
-  .stats-bar-inner { gap: 1.5rem; }
-  .today-teams { grid-template-columns: 1fr auto 1fr; gap: 0.5rem; }
-  .today-team span { font-size: 0.85rem; }
+  .hero-ctas { flex-direction: column; width: 100%; }
+  .hero-ctas .btn { width: 100%; justify-content: center; }
+  
+  .today-teams { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 1rem; 
+    text-align: center;
+  }
+  .today-team.right { justify-content: center; flex-direction: row-reverse; }
+  .today-team span { font-size: 1rem; }
+  
+  .widgets-grid { grid-template-columns: 1fr; }
+  .news-grid { grid-template-columns: 1fr; }
+  
+  .widget-body { padding: 1rem; flex-direction: column; text-align: center; }
+  .widget-team { flex-direction: column; gap: 0.25rem; font-size: 0.9rem; justify-content: center; }
+  .widget-team.right { flex-direction: column; justify-content: center; }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 0.5rem;
+  padding-bottom: 0.5rem;
 }

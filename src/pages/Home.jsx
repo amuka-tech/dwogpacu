@@ -88,27 +88,29 @@ function MiniStandings({ group, rows }) {
         <span className="mini-group-label">Group {group}</span>
         <Link to="/standings" className="mini-view-all">Full Table <ChevronRight size={14} /></Link>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={row.team.id} className={i < 2 ? 'qualifies' : ''}>
-              <td>{i + 1}</td>
-              <td className="mini-team-name">
-                <Link to={`/team/${row.team.id}`} style={{color: 'inherit', textDecoration: 'none'}}>
-                  {row.team.shortName}
-                </Link>
-              </td>
-              <td>{row.p}</td><td>{row.w}</td><td>{row.d}</td><td>{row.l}</td>
-              <td className="pts">{row.pts}</td>
+      <div className="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>Pts</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={row.team.id} className={i < 2 ? 'qualifies' : ''}>
+                <td>{i + 1}</td>
+                <td className="mini-team-name">
+                  <Link to={`/team/${row.team.id}`} style={{color: 'inherit', textDecoration: 'none'}}>
+                    {row.team.shortName}
+                  </Link>
+                </td>
+                <td>{row.p}</td><td>{row.w}</td><td>{row.d}</td><td>{row.l}</td>
+                <td className="pts">{row.pts}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -249,9 +251,9 @@ export default function Home() {
             <h2 className="section-h2">Latest News</h2>
             <a href="https://x.com/DwogPacuCup" target="_blank" rel="noopener noreferrer" className="see-all">Follow @DwogPacuCup <ChevronRight size={16} /></a>
           </div>
-          <div className="news-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+          <div className="news-grid">
             
-            <div className="news-card glass" style={{ padding: '1.5rem', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="news-card glass">
               <span className="badge badge-group" style={{ alignSelf: 'flex-start' }}>📌 Pinned</span>
               <p style={{ margin: 0, color: '#e5e5e5', lineHeight: 1.5 }}>
                 "This Sunday at UTC Lira.... Defending Champions Vs Erute South, Isaac Okello Vs @AllanOkello8 ..... Mindyang Vs Sam Engola! Mark your calendar!"
@@ -259,7 +261,7 @@ export default function Home() {
               <span style={{ fontSize: '0.875rem', color: '#888' }}>Jun 30</span>
             </div>
 
-            <div className="news-card glass" style={{ padding: '1.5rem', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="news-card glass">
               <span className="badge badge-done" style={{ alignSelf: 'flex-start', background: '#333' }}>Match Update</span>
               <p style={{ margin: 0, color: '#e5e5e5', lineHeight: 1.5 }}>
                 "Dokolo South and Apac Municipality share the spoils after settling for a draw!"
@@ -267,7 +269,7 @@ export default function Home() {
               <span style={{ fontSize: '0.875rem', color: '#888' }}>1 hour ago</span>
             </div>
 
-            <div className="news-card glass" style={{ padding: '1.5rem', borderRadius: '12px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="news-card glass">
               <span className="badge" style={{ alignSelf: 'flex-start', background: 'var(--accent-primary)', color: '#fff' }}>Highlights</span>
               <p style={{ margin: 0, color: '#e5e5e5', lineHeight: 1.5 }}>
                 "Fans flare from yesterday’s opening game between Kioga County and Erute South at UTC Lira playground. The stands brought the energy, the teams brought the fight, and the 2nd edition of the Dwog Pacu Cup is officially up and running in style."
