@@ -6,10 +6,10 @@
   --bg-secondary: #141414;
   --bg-tertiary: #1c1c1c;
   
-  --accent-primary: #e33117;
-  --accent-primary-hover: #ff3b1f;
-  --accent-secondary: #ffffff;
-  --accent-tertiary: #e33117;
+  --accent-primary: #94c507;
+  --accent-primary-hover: #a5d912;
+  --accent-secondary: #fbfd00;
+  --accent-tertiary: #649200;
   --gold: #fbc02d;
   
   /* Text */
@@ -24,7 +24,7 @@
   --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.5);
   --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.7);
   --shadow-lg: 0 20px 25px rgba(0, 0, 0, 0.9);
-  --shadow-glow: 0 0 15px rgba(227, 49, 23, 0.4);
+  --shadow-glow: 0 0 15px rgba(148, 197, 7, 0.4);
   
   /* Typography */
   --font-heading: 'Saira Condensed', sans-serif;
@@ -199,7 +199,7 @@ a.glass:hover,
 }
 
 .badge-live {
-  background: var(--accent-primary);
+  background: #e33117;
   color: #fff;
   animation: livePulse 2s infinite ease-in-out;
 }
