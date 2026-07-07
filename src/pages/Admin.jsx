@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 import { useTournament } from '../context/TournamentContext';
 import { TEAMS } from '../data/teams';
 import { SQUADS } from '../data/squads';
-import { Lock, LogOut, Shield, Save, Plus, Trash2, CheckCircle, Clock, AlertCircle, Users } from 'lucide-react';
+import { Lock, LogOut, Shield, Save, Plus, Trash2, CheckCircle, Clock, AlertCircle, Users, RotateCcw } from 'lucide-react';
 import './Admin.css';
 
 // ── Login Screen ──────────────────────────────────────────────
@@ -58,7 +58,7 @@ function LoginScreen({ onLogin }) {
 }
 
 // ── Match Score Entry ─────────────────────────────────────────
-function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRemoveEvent, onUpdateLineups }) {
+function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRemoveEvent, onUpdateLineups, onReset }) {
   const home = TEAMS[fixture.homeTeamId];
   const away = TEAMS[fixture.awayTeamId];
 
@@ -125,6 +125,16 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
     setAs(a);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleReset = () => {
+    if (window.confirm('Are you sure you want to completely reset this match to Upcoming? This will clear scores and live status.')) {
+      onReset(fixture.id);
+      setHs('');
+      setAs('');
+      setLiveMin('');
+      toast.success('Match reset to Upcoming.');
+    }
   };
 
   const handleAddEvent = (e) => {
@@ -248,6 +258,16 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
           >
             {saved ? <><CheckCircle size={16} /> Saved!</> : <><Save size={16} /> Full Time</>}
           </button>
+          {(result?.homeScore !== null || result?.isLive) && (
+            <button
+              className="btn"
+              onClick={handleReset}
+              title="Reset to Upcoming"
+              style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border-color)', padding: '0.5rem' }}
+            >
+              <RotateCcw size={16} />
+            </button>
+          )}
         </div>
 
         {fixture.homeTeamId && (
@@ -395,6 +415,10 @@ export default function Admin() {
     updateMatchResult(matchId, homeScore, awayScore, isLive, liveMinute);
   };
 
+  const handleResetMatch = (matchId) => {
+    updateMatchResult(matchId, null, null, false, "");
+  };
+
   const handleAddEvent = (matchId, event) => {
     addMatchEvent(matchId, event);
   };
@@ -493,6 +517,7 @@ export default function Admin() {
                 onAddEvent={handleAddEvent}
                 onRemoveEvent={handleRemoveEvent}
                 onUpdateLineups={handleUpdateLineups}
+                onReset={handleResetMatch}
               />
             ))}
           </div>
@@ -515,6 +540,7 @@ export default function Admin() {
               onAddEvent={handleAddEvent}
               onRemoveEvent={handleRemoveEvent}
               onUpdateLineups={handleUpdateLineups}
+              onReset={handleResetMatch}
             />
           ))}
         </div>
