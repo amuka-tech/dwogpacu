@@ -160,7 +160,10 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
   return (
     <div className="se-row glass">
       <div className="se-match-info">
-        <span className="se-num">#{fixture.matchNo}</span>
+        <span className="se-num">
+          #{fixture.matchNo}
+          {result?.isLive && <span className="live-indicator-pulse">LIVE</span>}
+        </span>
         <span className="se-group">{fixture.group ? `Grp ${fixture.group}` : fixture.day}</span>
         <span className="se-date">{fixture.date} · {fixture.time}</span>
       </div>
@@ -203,42 +206,45 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
         </div>
       )}
 
-      <div className="se-actions">
-        <input
-          type="text"
-          value={liveMin}
-          onChange={e => setLiveMin(e.target.value)}
-          placeholder="Min (e.g. 67')"
-          className="min-input"
-        />
-        <button
-          className={`btn btn-live ${saved ? 'btn-saved' : ''}`}
-          onClick={handleLive}
-          disabled={!fixture.homeTeamId}
-          title={result?.isLive ? "Update Live Score/Minute" : "Mark as Live"}
-          style={result?.isLive ? { background: 'var(--accent-tertiary)', color: '#fff', borderColor: 'var(--accent-tertiary)' } : {}}
-        >
-          <Clock size={16} /> {result?.isLive ? 'Update Live' : 'Live'}
-        </button>
-        {result?.isLive && (
+      <div className="se-actions-container">
+        <div className="se-actions primary">
+          <input
+            type="text"
+            value={liveMin}
+            onChange={e => setLiveMin(e.target.value)}
+            placeholder="Min (e.g. 67')"
+            className="min-input"
+          />
           <button
-            className="btn btn-live"
-            onClick={handleRemoveLive}
-            title="Remove Live Status"
-            style={{ background: '#333', color: '#fff', borderColor: '#333' }}
+            className={`btn btn-live ${saved ? 'btn-saved' : ''}`}
+            onClick={handleLive}
+            disabled={!fixture.homeTeamId}
+            title={result?.isLive ? "Update Live Score/Minute" : "Mark as Live"}
+            style={result?.isLive ? { background: 'var(--accent-tertiary)', color: '#fff', borderColor: 'var(--accent-tertiary)' } : {}}
           >
-            End Live
+            <Clock size={16} /> {result?.isLive ? 'Update Live' : 'Live'}
           </button>
-        )}
-        <button
-          className={`btn btn-save ${saved ? 'btn-saved' : ''}`}
-          onClick={handleSave}
-          disabled={!fixture.homeTeamId}
-        >
-          {saved ? <><CheckCircle size={16} /> Saved!</> : <><Save size={16} /> Full Time</>}
-        </button>
+          {result?.isLive && (
+            <button
+              className="btn btn-live"
+              onClick={handleRemoveLive}
+              title="Remove Live Status"
+              style={{ background: '#333', color: '#fff', borderColor: '#333' }}
+            >
+              End Live
+            </button>
+          )}
+          <button
+            className={`btn btn-save ${saved ? 'btn-saved' : ''}`}
+            onClick={handleSave}
+            disabled={!fixture.homeTeamId}
+          >
+            {saved ? <><CheckCircle size={16} /> Saved!</> : <><Save size={16} /> Full Time</>}
+          </button>
+        </div>
+
         {fixture.homeTeamId && (
-          <>
+          <div className="se-actions secondary">
             <button
               className="btn btn-secondary"
               onClick={() => { setShowEvents(!showEvents); setShowLineups(false); }}
@@ -253,7 +259,7 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
             >
               <Users size={16} /> Lineups
             </button>
-          </>
+          </div>
         )}
       </div>
 
