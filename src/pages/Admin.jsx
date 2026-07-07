@@ -316,7 +316,17 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
 
 // ── Main Admin Panel ──────────────────────────────────────────
 export default function Admin() {
-  const { isAdmin, loginAdmin, logoutAdmin, fixtures, results, dispatch } = useTournament();
+  const { 
+    isAdmin, 
+    loginAdmin, 
+    logoutAdmin, 
+    fixtures, 
+    results, 
+    updateMatchResult, 
+    addMatchEvent, 
+    removeMatchEvent, 
+    updateLineups 
+  } = useTournament();
 
   const [filterDay, setFilterDay] = useState('All');
 
@@ -326,28 +336,28 @@ export default function Admin() {
   }, [fixtures]);
 
   const filtered = useMemo(() => {
-    if (filterDay === 'All') return fixtures.filter(f => f.stage === 'group');
+    if (filterDay === 'All') return fixtures;
     return fixtures.filter(f => f.day === filterDay);
   }, [fixtures, filterDay]);
 
   const handleSave = (matchId, homeScore, awayScore) => {
-    dispatch({ type: 'SET_MATCH_RESULT', matchId, homeScore, awayScore });
+    updateMatchResult(matchId, homeScore, awayScore, false, null);
   };
 
   const handleSetLive = (matchId, homeScore, awayScore, liveMinute) => {
-    dispatch({ type: 'SET_MATCH_LIVE', matchId, homeScore, awayScore, liveMinute });
+    updateMatchResult(matchId, homeScore, awayScore, true, liveMinute);
   };
 
   const handleAddEvent = (matchId, event) => {
-    dispatch({ type: 'ADD_MATCH_EVENT', matchId, event });
+    addMatchEvent(matchId, event);
   };
 
   const handleRemoveEvent = (matchId, eventId) => {
-    dispatch({ type: 'REMOVE_EVENT', matchId, eventId });
+    removeMatchEvent(matchId, eventId);
   };
 
   const handleUpdateLineups = (matchId, homeFormation, awayFormation, homeLineup, awayLineup) => {
-    dispatch({ type: 'UPDATE_LINEUPS', matchId, homeFormation, awayFormation, homeLineup, awayLineup });
+    updateLineups(matchId, homeFormation, awayFormation, homeLineup, awayLineup);
   };
 
   if (!isAdmin) {
