@@ -94,5 +94,30 @@ export const SQUADS = {
       { no: "18", name: "MYANMAR OSCAR" }
     ],
     coach: "BOB OBIRA"
+  },
+  "Lira City West": {
+    players: [
+      { no: "", name: "Ocama Daniel" },
+      { no: "", name: "Yoacel Raymond" },
+      { no: "", name: "Okwir Emmanuel" },
+      { no: "", name: "Ebasu Clement" },
+      { no: "", name: "Akodi Solomon" },
+      { no: "", name: "Twha Maya" },
+      { no: "", name: "Maduka innocent" },
+      { no: "", name: "Odongo haron" },
+      { no: "", name: "Dominic Bonga" },
+      { no: "", name: "Morgan matende" },
+      { no: "", name: "Gum Joel" },
+      { no: "", name: "Ayiko Samuel", role: "(GK)" },
+      { no: "", name: "Ayo Emmanuel" },
+      { no: "", name: "OGWAL Oscar" },
+      { no: "", name: "Atanga Felix" },
+      { no: "", name: "Oceng Ronald" },
+      { no: "", name: "Odongo Brian" },
+      { no: "", name: "Kirya Christopher" },
+      { no: "", name: "Amok kemis" },
+      { no: "", name: "Omeri Solomon" }
+    ],
+    coach: "RONALD OKELLO"
   }
 };
