@@ -208,13 +208,20 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
 
       <div className="se-actions-container">
         <div className="se-actions primary">
-          <input
-            type="text"
-            value={liveMin}
-            onChange={e => setLiveMin(e.target.value)}
-            placeholder="Min (e.g. 67')"
-            className="min-input"
-          />
+          <div className="live-min-wrapper">
+            <input
+              type="text"
+              value={liveMin}
+              onChange={e => setLiveMin(e.target.value)}
+              placeholder="Min/Period"
+              className="min-input"
+            />
+            <div className="quick-periods">
+              <button className="qp-btn" onClick={() => setLiveMin('1st Half')} title="First Half">1H</button>
+              <button className="qp-btn" onClick={() => setLiveMin('Half Time')} title="Half Time">HT</button>
+              <button className="qp-btn" onClick={() => setLiveMin('2nd Half')} title="Second Half">2H</button>
+            </div>
+          </div>
           <button
             className={`btn btn-live ${saved ? 'btn-saved' : ''}`}
             onClick={handleLive}

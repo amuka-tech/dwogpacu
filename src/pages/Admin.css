@@ -294,6 +294,32 @@
 }
 .min-input::placeholder { color: var(--text-muted); }
 
+.live-min-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.quick-periods {
+  display: flex;
+  gap: 0.25rem;
+  justify-content: space-between;
+}
+.qp-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  font-size: 0.65rem;
+  padding: 0.15rem 0.3rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex: 1;
+}
+.qp-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+}
+
 .btn-live {
   display: flex; align-items: center; gap: 0.4rem;
   padding: 0.5rem 0.9rem;
