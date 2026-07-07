@@ -219,7 +219,7 @@ export default function Home() {
                     <div className="today-teams">
                       <Link to={`/team/${home?.id}`} className="today-team" style={{color: 'inherit', textDecoration: 'none'}} onClick={(e) => e.stopPropagation()}>
                         <Shield size={20} style={{ color: home?.color }} />
-                        <span>{home?.name}</span>
+                        <span>{home?.shortName}</span>
                       </Link>
                       <div className="today-score">
                         {isDone || isLive
@@ -228,7 +228,7 @@ export default function Home() {
                         }
                       </div>
                       <Link to={`/team/${away?.id}`} className="today-team right" style={{color: 'inherit', textDecoration: 'none'}} onClick={(e) => e.stopPropagation()}>
-                        <span>{away?.name}</span>
+                        <span>{away?.shortName}</span>
                         <Shield size={20} style={{ color: away?.color }} />
                       </Link>
                     </div>

@@ -9,7 +9,7 @@ export const TEAMS = {};
 
 // We will use the full name as the shortName per user request
 const getShortName = (name) => {
-  return name;
+  return name.replace(' Constituency', '').replace(' Municipality', '');
 };
 
 const colors = ['#e63946', '#f4a261', '#2a9d8f', '#264653', '#8ab17d', '#e9c46a'];
