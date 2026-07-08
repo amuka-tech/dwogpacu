@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import React, { createContext, useContext, useEffect, useState, useMemo, useRef } from 'react';
 import { TEAMS, GROUPS } from '../data/teams';
 import { FIXTURES } from '../data/fixtures';
 import { calculateGroupStandings, getTopScorers, getAllCards } from '../utils/tournamentEngine';
