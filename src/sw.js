@@ -10,7 +10,6 @@ self.addEventListener('push', function (event) {
     const options = {
       body: data.body,
       icon: '/dwogpacu/web-app-manifest-192x192.png',
-      badge: '/dwogpacu/web-app-manifest-192x192.png',
       vibrate: [200, 100, 200, 100, 200, 100, 200],
       requireInteraction: true,
       data: {
