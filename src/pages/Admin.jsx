@@ -265,7 +265,7 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
               title="Reset to Upcoming"
               style={{ background: 'transparent', color: 'var(--text-muted)', border: '1px solid var(--border-color)', padding: '0.5rem' }}
             >
-              <RotateCcw size={16} />
+              <RotateCcw size={16} /> <span className="mobile-text">Reset</span>
             </button>
           )}
         </div>
