@@ -14,6 +14,7 @@ export default class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('App Crashed:', error, errorInfo);
+    this.setState({ errorInfo });
   }
 
   render() {
@@ -32,16 +33,16 @@ export default class ErrorBoundary extends React.Component {
             <div className="error-actions">
               <button 
                 className="btn btn-primary"
-                onClick={() => window.location.reload()}
+                onClick={() => window.location.reload(true)}
               >
                 <RefreshCcw size={18} /> Restart Application
               </button>
             </div>
-            {process.env.NODE_ENV === 'development' && (
-              <pre className="error-details">
-                {this.state.error?.toString()}
-              </pre>
-            )}
+            <pre className="error-details" style={{ marginTop: '1rem', background: '#222', padding: '1rem', borderRadius: '8px', fontSize: '0.8rem', color: '#ff6b6b', whiteSpace: 'pre-wrap', textAlign: 'left', maxHeight: '200px', overflowY: 'auto' }}>
+              {this.state.error?.toString()}
+              {'\n'}
+              {this.state.errorInfo?.componentStack}
+            </pre>
           </div>
         </div>
       );
