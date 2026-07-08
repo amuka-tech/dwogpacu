@@ -70,7 +70,7 @@ export default function MatchDetails() {
           <div className="md-teams">
             {/* HOME TEAM */}
             <div className="md-team home">
-              <Shield size={100} style={{ color: home?.color }} className="md-team-logo" />
+              <Shield size={64} style={{ color: home?.color }} className="md-team-logo" />
               <Link to={`/team/${home?.id}`} className="md-team-name">{home?.name}</Link>
               {homeForm.length > 0 && (
                 <div className="form-guide" style={{ display: 'flex', gap: '4px', justifyContent: 'center', marginTop: '0.5rem' }}>
@@ -107,7 +107,7 @@ export default function MatchDetails() {
 
             {/* AWAY TEAM */}
             <div className="md-team away">
-              <Shield size={100} style={{ color: away?.color }} className="md-team-logo" />
+              <Shield size={64} style={{ color: away?.color }} className="md-team-logo" />
               <Link to={`/team/${away?.id}`} className="md-team-name">{away?.name}</Link>
               {awayForm.length > 0 && (
                 <div className="form-guide" style={{ display: 'flex', gap: '4px', justifyContent: 'center', marginTop: '0.5rem' }}>

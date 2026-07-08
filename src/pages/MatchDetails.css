@@ -1,13 +1,13 @@
 /* ── SCOREBOARD HEADER ── */
 .md-scoreboard {
   position: relative;
-  min-height: 400px;
+  min-height: 200px;
   background: 
     linear-gradient(180deg, rgba(var(--bg-rgb-base),0.95) 0%, rgba(var(--bg-rgb-base),0.8) 100%),
     url('https://goalkick.qodeinteractive.com/wp-content/uploads/2024/05/single-team-a-img.jpg') center/cover no-repeat;
   display: flex;
   align-items: center;
-  padding: 4rem 0 2rem;
+  padding: 2rem 0 1.5rem;
   border-bottom: 2px solid var(--accent-primary);
 }
 .md-overlay {
@@ -21,7 +21,7 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .md-back {
@@ -56,7 +56,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 3rem;
+  gap: 1.5rem;
 }
 .md-team {
   display: flex;
@@ -70,7 +70,7 @@
 }
 .md-team-name {
   font-family: var(--font-heading);
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 800;
   color: var(--text-primary);
   text-decoration: none;
@@ -88,15 +88,15 @@
 }
 .md-score {
   font-family: var(--font-heading);
-  font-size: 5rem;
+  font-size: 3.5rem;
   font-weight: 900;
   color: var(--accent-primary);
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
   line-height: 1;
 }
-.md-dash { color: var(--text-muted); font-size: 3rem; }
+.md-dash { color: var(--text-muted); font-size: 2rem; }
 .md-time {
   font-family: var(--font-heading);
   font-size: 3rem;
