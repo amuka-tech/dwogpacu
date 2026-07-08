@@ -253,7 +253,14 @@
 .md-dummy-player { font-weight: 500; }
 
 @media (max-width: 768px) {
-  .md-teams { flex-direction: column; gap: 2rem; }
-  .md-score { font-size: 4rem; }
+  .md-teams { flex-direction: row; gap: 0.5rem; align-items: flex-start; }
+  .md-team { gap: 0.5rem; }
+  .md-team-logo { width: 48px; height: 48px; }
+  .md-team-name { font-size: 1.1rem; line-height: 1.2; word-break: break-word; }
+  .md-score { font-size: 2.5rem; gap: 0.5rem; }
+  .md-dash { font-size: 1.5rem; }
+  .md-time { font-size: 1.8rem; }
+  .md-center { min-width: 100px; gap: 0.5rem; }
   .md-lineups { grid-template-columns: 1fr; }
+  .md-meta { flex-direction: column; gap: 0.5rem; text-align: center; }
 }
