@@ -37,7 +37,7 @@ export default function TeamProfile() {
           <Link to="/" className="back-link"><ArrowLeft size={16}/> Back to Home</Link>
           <div className="tp-hero-main">
             <div className="tp-hero-shield">
-              <Shield size={120} style={{ color: team.color }} />
+              <Shield size={64} style={{ color: team.color }} />
             </div>
             <div className="tp-hero-text">
               <div className="tp-hero-badges">
