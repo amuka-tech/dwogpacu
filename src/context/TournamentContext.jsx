@@ -3,6 +3,18 @@ import { TEAMS, GROUPS } from '../data/teams';
 import { FIXTURES } from '../data/fixtures';
 import { calculateGroupStandings, getTopScorers, getAllCards } from '../utils/tournamentEngine';
 import { supabase } from '../utils/supabase';
+import { toast } from 'react-hot-toast';
+
+function urlB64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  const outputArray = new Uint8Array(rawData.length);
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
 
 const TournamentContext = createContext(null);
 
@@ -10,6 +22,39 @@ export function TournamentProvider({ children }) {
   const [results, setResults] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+
+  const updateMatch = async (matchId, data) => {
+    try {
+      const currentMatch = results[matchId] || { homeScore: 0, awayScore: 0, isLive: false };
+      
+      const { error } = await supabase.from('matches').upsert({
+        id: matchId,
+        home_score: data.homeScore,
+        away_score: data.awayScore,
+        is_live: data.isLive,
+        events: currentMatch.events || [],
+        live_minute: currentMatch.liveMinute || ""
+      });
+
+      if (error) throw error;
+      
+      // Directly invoke the Edge Function to send push notifications
+      // This completely bypasses the need for a Database Webhook!
+      supabase.functions.invoke('notify', {
+        body: {
+          type: 'UPDATE',
+          table: 'matches',
+          old_record: { home_score: currentMatch.homeScore, away_score: currentMatch.awayScore, is_live: currentMatch.isLive },
+          record: { home_score: data.homeScore, away_score: data.awayScore, is_live: data.isLive }
+        }
+      }).catch(err => console.error("Edge function push error:", err));
+
+      toast.success('Match updated successfully');
+    } catch (err) {
+      console.error('Error updating match:', err);
+      toast.error('Failed to update match');
+    }
+  };
 
   const fetchMatches = async () => {
     try {
@@ -43,6 +88,24 @@ export function TournamentProvider({ children }) {
 
     const channel = supabase.channel('public:matches')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload) => {
+        if (payload.eventType === 'UPDATE' && payload.new && payload.old) {
+          const newMatch = payload.new;
+          const oldMatch = payload.old;
+          const fixture = FIXTURES.find(f => f.id === newMatch.id);
+          
+          if (fixture) {
+            const home = TEAMS[fixture.homeTeamId];
+            const away = TEAMS[fixture.awayTeamId];
+            
+            if (newMatch.home_score > oldMatch.home_score) {
+              toast.success(`⚽ GOAL! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
+            } else if (newMatch.away_score > oldMatch.away_score) {
+              toast.success(`⚽ GOAL! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
+            } else if (newMatch.is_live && !oldMatch.is_live) {
+              toast.success(`🔴 KICKOFF! ${home.shortName} vs ${away.shortName}`, { duration: 5000 });
+            }
+          }
+        }
         fetchMatches(); 
       })
       .subscribe();
@@ -96,6 +159,46 @@ export function TournamentProvider({ children }) {
       await supabase.from('matches').delete().eq('id', matchId);
     } catch(err) {
       console.error("Failed to delete result", err);
+    }
+  };
+
+  const subscribeToPushNotifications = async () => {
+    try {
+      if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+        toast.error('Push notifications are not supported by your browser.');
+        return;
+      }
+      
+      const permission = await Notification.requestPermission();
+      if (permission !== 'granted') {
+        toast.error('Notification permission denied.');
+        return;
+      }
+
+      const registration = await navigator.serviceWorker.ready;
+      const subscription = await registration.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlB64ToUint8Array('BOl_ede4LbXQpsED0dXQp23ehRtecYLTz2I9QI9PpLVGgRqcQjmdYslWoe2R4YMfKJhs8Xm3oTHdyGKjd9Znme4')
+      });
+      
+      const subJSON = subscription.toJSON();
+      
+      // Store in Supabase
+      const { error } = await supabase.from('subscriptions').insert([{
+        endpoint: subJSON.endpoint,
+        p256dh: subJSON.keys.p256dh,
+        auth: subJSON.keys.auth
+      }]);
+      
+      if (error) {
+        // If it already exists or errors
+        console.warn('Subscription insert issue:', error);
+      }
+      
+      toast.success('Successfully subscribed to live updates!');
+    } catch (err) {
+      console.error('Failed to subscribe:', err);
+      toast.error('Failed to subscribe to notifications.');
     }
   };
 
@@ -200,7 +303,8 @@ export function TournamentProvider({ children }) {
       removeMatchResult,
       addMatchEvent,
       removeMatchEvent,
-      updateLineups
+      updateLineups,
+      subscribeToPushNotifications
     }}>
       {children}
     </TournamentContext.Provider>

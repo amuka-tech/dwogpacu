@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Trophy, Lock, Sun, Moon } from 'lucide-react';
+import { Menu, X, Trophy, Lock, Sun, Moon, Bell } from 'lucide-react';
 import { useTournament } from '../context/TournamentContext';
 import './Header.css';
 
@@ -8,7 +8,7 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   const location = useLocation();
-  const { liveMatches, isAdmin } = useTournament();
+  const { liveMatches, isAdmin, subscribeToPushNotifications } = useTournament();
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -56,6 +56,9 @@ const Header = () => {
           </ul>
         </nav>
         <div className="header-right">
+          <button className="theme-toggle" onClick={subscribeToPushNotifications} title="Enable Live Notifications" style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: '0.5rem', borderRadius: '50%', transition: 'background 0.2s' }}>
+            <Bell size={18} />
+          </button>
           <button className="theme-toggle" onClick={toggleTheme} title="Toggle Theme" style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: '0.5rem', borderRadius: '50%', transition: 'background 0.2s' }}>
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
           </button>
