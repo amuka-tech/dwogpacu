@@ -86,7 +86,7 @@ export default function MatchDetails() {
                   <div className="md-live-badge">
                     <span className="live-dot" /> LIVE
                   </div>
-                  {result.liveMinute && <span style={{ color: '#fff', fontWeight: '800', fontSize: '0.9rem', letterSpacing: '0.05em' }}>{result.liveMinute}</span>}
+                  {result.liveMinute && <span style={{ color: 'var(--text-primary)', fontWeight: '800', fontSize: '0.9rem', letterSpacing: '0.05em' }}>{result.liveMinute}</span>}
                 </div>
               )}
               {result.homeScore !== null ? (

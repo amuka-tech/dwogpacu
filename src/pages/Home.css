@@ -1,5 +1,4 @@
 /* ── HOME PAGE STYLES ─────────────────────────────────────── */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
 
 /* Hero */
 .hero {
@@ -8,8 +7,8 @@
   display: flex;
   align-items: center;
   background:
-    linear-gradient(135deg, rgba(11,24,0,0.95) 0%, rgba(11,24,0,0.85) 50%, rgba(148, 197, 7, 0.15) 100%),
-    radial-gradient(ellipse at 70% 50%, rgba(148, 197, 7, 0.08) 0%, transparent 60%);
+    linear-gradient(135deg, rgba(var(--bg-rgb-base),0.95) 0%, rgba(var(--bg-rgb-base),0.85) 50%, rgba(227, 49, 23, 0.15) 100%),
+    radial-gradient(ellipse at 70% 50%, rgba(227, 49, 23, 0.08) 0%, transparent 60%);
   padding-top: 100px;
   padding-bottom: 4rem;
   overflow: hidden;

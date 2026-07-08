@@ -3,7 +3,7 @@
   position: relative;
   min-height: 400px;
   background: 
-    linear-gradient(180deg, rgba(11,24,0,0.95) 0%, rgba(11,24,0,0.8) 100%),
+    linear-gradient(180deg, rgba(var(--bg-rgb-base),0.95) 0%, rgba(var(--bg-rgb-base),0.8) 100%),
     url('https://goalkick.qodeinteractive.com/wp-content/uploads/2024/05/single-team-a-img.jpg') center/cover no-repeat;
   display: flex;
   align-items: center;

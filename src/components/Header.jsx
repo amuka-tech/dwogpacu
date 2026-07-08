@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, Trophy, Lock } from 'lucide-react';
+import { Menu, X, Trophy, Lock, Sun, Moon } from 'lucide-react';
 import { useTournament } from '../context/TournamentContext';
 import './Header.css';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
   const location = useLocation();
   const { liveMatches, isAdmin } = useTournament();
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const navLinks = [
     { name: 'Home', path: '/' },
@@ -46,11 +56,14 @@ const Header = () => {
           </ul>
         </nav>
         <div className="header-right">
+          <button className="theme-toggle" onClick={toggleTheme} title="Toggle Theme" style={{ background: 'transparent', border: 'none', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: '0.5rem', borderRadius: '50%', transition: 'background 0.2s' }}>
+            {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           <Link to="/admin" className={`admin-link ${isAdmin ? 'admin-active' : ''}`} title="Admin Panel">
             <Lock size={18} />
           </Link>
           <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-            {isMenuOpen ? <X size={28} color="#fff" /> : <Menu size={28} color="#fff" />}
+            {isMenuOpen ? <X size={28} color="currentColor" /> : <Menu size={28} color="currentColor" />}
           </button>
         </div>
       </div>

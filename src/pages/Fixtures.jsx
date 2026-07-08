@@ -30,7 +30,7 @@ function FixtureCard({ fixture, result }) {
           {fixture.group && <span className="badge badge-group">Group {fixture.group}</span>}
           <span className={`badge badge-status ${status}`}>{STATUS_LABELS[status]}</span>
           {status === 'live' && result?.liveMinute && (
-            <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '0.8rem', marginLeft: '4px' }}>{result.liveMinute}</span>
+            <span style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '0.8rem', marginLeft: '4px' }}>{result.liveMinute}</span>
           )}
         </div>
       </div>

@@ -214,7 +214,7 @@ export default function Home() {
                     <div className="today-meta">
                       <span className="badge badge-group">Group {f.group}</span>
                       {isLive && <span className="badge badge-live">● LIVE</span>}
-                      {isLive && r.liveMinute && <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '0.85rem' }}>{r.liveMinute}</span>}
+                      {isLive && r.liveMinute && <span style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '0.85rem' }}>{r.liveMinute}</span>}
                       {isDone && <span className="badge badge-done">FT</span>}
                     </div>
                     <div className="today-teams">

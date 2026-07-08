@@ -141,7 +141,7 @@ export default function TeamProfile() {
                     <div className="tp-mc-header">
                       <span className="tp-mc-date"><Calendar size={14}/> {f.isoDate}</span>
                       {r.isLive && <span className="badge badge-live">LIVE</span>}
-                      {r.isLive && r.liveMinute && <span style={{ color: '#fff', fontWeight: 'bold', fontSize: '0.85rem' }}>{r.liveMinute}</span>}
+                      {r.isLive && r.liveMinute && <span style={{ color: 'var(--text-primary)', fontWeight: 'bold', fontSize: '0.85rem' }}>{r.liveMinute}</span>}
                     </div>
                     <div className="tp-mc-body">
                       <Link to={`/team/${home?.id}`} className="tp-mc-team home" style={{color: 'inherit', textDecoration: 'none'}} onClick={(e) => e.stopPropagation()}>

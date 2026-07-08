@@ -70,8 +70,8 @@
 .standings-table tbody tr:hover td { background: rgba(255,255,255,0.04); }
 .standings-table tbody tr:last-child td { border-bottom: none; }
 
-.standings-table tr.qualifies { background: rgba(148,197,7,0.05); }
-.standings-table tr.qualifies:hover td { background: rgba(148,197,7,0.08); }
+.standings-table tr.qualifies { background: rgba(227,49,23,0.05); }
+.standings-table tr.qualifies:hover td { background: rgba(227,49,23,0.08); }
 
 /* Position Column */
 .pos-th { width: 36px; }
