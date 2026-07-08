@@ -24,50 +24,6 @@ export function TournamentProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const resultsRef = useRef({});
 
-  const updateMatch = async (matchId, data) => {
-    try {
-      const currentMatch = results[matchId] || { homeScore: 0, awayScore: 0, isLive: false };
-      
-      const { error } = await supabase.from('matches').upsert({
-        id: matchId,
-        home_score: data.homeScore,
-        away_score: data.awayScore,
-        is_live: data.isLive,
-        events: currentMatch.events || [],
-        live_minute: currentMatch.liveMinute || ""
-      });
-
-      if (error) throw error;
-      
-      const fixture = FIXTURES.find(f => f.id === matchId);
-      const homeName = fixture ? TEAMS[fixture.homeTeamId]?.shortName : "Home";
-      const awayName = fixture ? TEAMS[fixture.awayTeamId]?.shortName : "Away";
-
-      // Directly invoke the Edge Function to send push notifications
-      // This completely bypasses the need for a Database Webhook!
-      supabase.functions.invoke('notify', {
-        body: {
-          type: 'UPDATE',
-          table: 'matches',
-          old_record: { home_score: currentMatch.homeScore, away_score: currentMatch.awayScore, is_live: currentMatch.isLive },
-          record: { 
-            home_score: data.homeScore, 
-            away_score: data.awayScore, 
-            is_live: data.isLive,
-            home_team: homeName,
-            away_team: awayName
-          }
-        }
-      }).catch(err => console.error("Edge function push error:", err));
-
-      await fetchMatches(); // Instantly update the local UI
-      toast.success('Match updated successfully');
-    } catch (err) {
-      console.error('Error updating match:', err);
-      toast.error('Failed to update match');
-    }
-  };
-
   const fetchMatches = async () => {
     try {
       const { data, error } = await supabase.from('matches').select('*');
@@ -109,17 +65,17 @@ export function TournamentProvider({ children }) {
           const fixture = FIXTURES.find(f => f.id === newMatch.id);
           
           if (fixture) {
-            const home = TEAMS[fixture.homeTeamId];
-            const away = TEAMS[fixture.awayTeamId];
+            const homeName = TEAMS[fixture.homeTeamId]?.shortName || 'Home';
+            const awayName = TEAMS[fixture.awayTeamId]?.shortName || 'Away';
             
             if (newMatch.home_score > oldMatch.homeScore) {
-              toast.success(`⚽ GOAL! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
+              toast.success(`⚽ GOAL! ${homeName} ${newMatch.home_score} - ${newMatch.away_score} ${awayName}`, { duration: 5000 });
             } else if (newMatch.away_score > oldMatch.awayScore) {
-              toast.success(`⚽ GOAL! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
+              toast.success(`⚽ GOAL! ${homeName} ${newMatch.home_score} - ${newMatch.away_score} ${awayName}`, { duration: 5000 });
             } else if (newMatch.is_live && !oldMatch.isLive) {
-              toast.success(`🔴 KICKOFF! ${home.shortName} vs ${away.shortName}`, { duration: 5000 });
+              toast.success(`🔴 KICKOFF! ${homeName} vs ${awayName}`, { duration: 5000 });
             } else if (!newMatch.is_live && oldMatch.isLive) {
-              toast.success(`🏁 FULL TIME! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
+              toast.success(`🏁 FULL TIME! ${homeName} ${newMatch.home_score} - ${newMatch.away_score} ${awayName}`, { duration: 5000 });
             }
           }
         }
@@ -148,12 +104,12 @@ export function TournamentProvider({ children }) {
 
   const updateMatchResult = async (matchId, homeScore, awayScore, isLive = false, liveMinute = null) => {
     try {
-      const currentData = results[matchId] || { events: [] };
+      const currentData = results[matchId] || { events: [], homeScore: 0, awayScore: 0, isLive: false };
       const finalLiveMinute = liveMinute !== null ? liveMinute : currentData.liveMinute;
       const newMatchData = { ...currentData, homeScore, awayScore, isLive, liveMinute: finalLiveMinute };
       setResults(prev => ({ ...prev, [matchId]: newMatchData }));
       
-      await supabase.from('matches').upsert({
+      const { error } = await supabase.from('matches').upsert({
         id: matchId,
         home_score: homeScore,
         away_score: awayScore,
@@ -161,6 +117,29 @@ export function TournamentProvider({ children }) {
         live_minute: finalLiveMinute,
         events: currentData.events || []
       });
+
+      if (error) throw error;
+
+      const fixture = FIXTURES.find(f => f.id === matchId);
+      const homeName = fixture ? TEAMS[fixture.homeTeamId]?.shortName || "Home" : "Home";
+      const awayName = fixture ? TEAMS[fixture.awayTeamId]?.shortName || "Away" : "Away";
+
+      // Directly invoke the Edge Function to send push notifications
+      supabase.functions.invoke('notify', {
+        body: {
+          type: 'UPDATE',
+          table: 'matches',
+          old_record: { home_score: currentData.homeScore, away_score: currentData.awayScore, is_live: currentData.isLive },
+          record: { 
+            home_score: homeScore, 
+            away_score: awayScore, 
+            is_live: isLive,
+            home_team: homeName,
+            away_team: awayName
+          }
+        }
+      }).catch(err => console.error("Edge function push error:", err));
+
     } catch(err) {
       console.error("Failed to update result", err);
     }
