@@ -22,6 +22,7 @@ export function TournamentProvider({ children }) {
   const [results, setResults] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const resultsRef = useRef({});
 
   const updateMatch = async (matchId, data) => {
     try {
@@ -38,6 +39,10 @@ export function TournamentProvider({ children }) {
 
       if (error) throw error;
       
+      const fixture = FIXTURES.find(f => f.id === matchId);
+      const homeName = fixture ? TEAMS[fixture.homeTeamId]?.shortName : "Home";
+      const awayName = fixture ? TEAMS[fixture.awayTeamId]?.shortName : "Away";
+
       // Directly invoke the Edge Function to send push notifications
       // This completely bypasses the need for a Database Webhook!
       supabase.functions.invoke('notify', {
@@ -45,10 +50,17 @@ export function TournamentProvider({ children }) {
           type: 'UPDATE',
           table: 'matches',
           old_record: { home_score: currentMatch.homeScore, away_score: currentMatch.awayScore, is_live: currentMatch.isLive },
-          record: { home_score: data.homeScore, away_score: data.awayScore, is_live: data.isLive }
+          record: { 
+            home_score: data.homeScore, 
+            away_score: data.awayScore, 
+            is_live: data.isLive,
+            home_team: homeName,
+            away_team: awayName
+          }
         }
       }).catch(err => console.error("Edge function push error:", err));
 
+      await fetchMatches(); // Instantly update the local UI
       toast.success('Match updated successfully');
     } catch (err) {
       console.error('Error updating match:', err);
@@ -70,6 +82,7 @@ export function TournamentProvider({ children }) {
           liveMinute: match.live_minute || "", 
         };
       });
+      resultsRef.current = resultsMap;
       setResults(resultsMap);
     } catch (err) {
       console.error('Error fetching matches:', err);
@@ -88,20 +101,22 @@ export function TournamentProvider({ children }) {
 
     const channel = supabase.channel('public:matches')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'matches' }, (payload) => {
-        if (payload.eventType === 'UPDATE' && payload.new && payload.old) {
+        if (payload.eventType === 'UPDATE' && payload.new) {
           const newMatch = payload.new;
-          const oldMatch = payload.old;
+          // payload.old does not contain the old scores because of Replica Identity rules.
+          // So we use our local resultsRef to determine if a goal was scored!
+          const oldMatch = resultsRef.current[newMatch.id] || { homeScore: 0, awayScore: 0, isLive: false };
           const fixture = FIXTURES.find(f => f.id === newMatch.id);
           
           if (fixture) {
             const home = TEAMS[fixture.homeTeamId];
             const away = TEAMS[fixture.awayTeamId];
             
-            if (newMatch.home_score > oldMatch.home_score) {
+            if (newMatch.home_score > oldMatch.homeScore) {
               toast.success(`⚽ GOAL! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
-            } else if (newMatch.away_score > oldMatch.away_score) {
+            } else if (newMatch.away_score > oldMatch.awayScore) {
               toast.success(`⚽ GOAL! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
-            } else if (newMatch.is_live && !oldMatch.is_live) {
+            } else if (newMatch.is_live && !oldMatch.isLive) {
               toast.success(`🔴 KICKOFF! ${home.shortName} vs ${away.shortName}`, { duration: 5000 });
             }
           }

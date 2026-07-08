@@ -30,11 +30,15 @@ serve(async (req) => {
 
       // Logic to determine if a goal was scored
       if (newRecord.home_score > oldRecord.home_score || newRecord.away_score > oldRecord.away_score) {
-        title = "⚽ GOAL SCORED!";
-        body = `Score update: ${newRecord.home_score} - ${newRecord.away_score}`;
+        const home = newRecord.home_team || 'Home';
+        const away = newRecord.away_team || 'Away';
+        title = `⚽ GOAL! ${home} ${newRecord.home_score} - ${newRecord.away_score} ${away}`;
+        body = "Live Score Update";
       } else if (newRecord.is_live && !oldRecord.is_live) {
-        title = "🔴 MATCH IS LIVE!";
-        body = "A match has just kicked off!";
+        const home = newRecord.home_team || 'Home';
+        const away = newRecord.away_team || 'Away';
+        title = `🔴 KICKOFF! ${home} vs ${away}`;
+        body = "Match is live now!";
       }
 
       // If we have a notification to send
