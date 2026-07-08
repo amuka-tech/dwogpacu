@@ -80,12 +80,14 @@ serve(async (req) => {
             url: "/dwogpacu/"
           })).catch(err => {
             console.error('Error sending to endpoint', sub.endpoint, err);
-            // Optionally delete invalid subscriptions here
+            return { endpoint: sub.endpoint, error: err.message || err.toString(), statusCode: err.statusCode, body: err.body };
           });
         });
 
-        await Promise.all(pushPromises);
-        return new Response(JSON.stringify({ success: true, count: pushPromises.length }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        const results = await Promise.all(pushPromises);
+        const errors = results.filter(r => r && r.error);
+        
+        return new Response(JSON.stringify({ success: true, count: pushPromises.length, errors }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
     }
 
