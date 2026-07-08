@@ -138,7 +138,7 @@
 /* ── MATCH GRIDS ── */
 .tp-match-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 1.5rem;
 }
 
@@ -233,7 +233,7 @@
 .tp-squad-section { margin-top: 3rem; }
 .tp-squad-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr));
   gap: 1rem;
   margin-top: 1.5rem;
 }
