@@ -39,6 +39,11 @@ serve(async (req) => {
         const away = newRecord.away_team || 'Away';
         title = `🔴 KICKOFF! ${home} vs ${away}`;
         body = "Match is live now!";
+      } else if (!newRecord.is_live && oldRecord.is_live) {
+        const home = newRecord.home_team || 'Home';
+        const away = newRecord.away_team || 'Away';
+        title = `🏁 FULL TIME! ${home} ${newRecord.home_score} - ${newRecord.away_score} ${away}`;
+        body = "Match has ended.";
       }
 
       // If we have a notification to send

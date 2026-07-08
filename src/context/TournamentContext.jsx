@@ -118,6 +118,8 @@ export function TournamentProvider({ children }) {
               toast.success(`⚽ GOAL! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
             } else if (newMatch.is_live && !oldMatch.isLive) {
               toast.success(`🔴 KICKOFF! ${home.shortName} vs ${away.shortName}`, { duration: 5000 });
+            } else if (!newMatch.is_live && oldMatch.isLive) {
+              toast.success(`🏁 FULL TIME! ${home.shortName} ${newMatch.home_score} - ${newMatch.away_score} ${away.shortName}`, { duration: 5000 });
             }
           }
         }
