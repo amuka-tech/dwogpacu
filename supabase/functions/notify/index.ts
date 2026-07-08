@@ -10,7 +10,17 @@ webPush.setVapidDetails(
   Deno.env.get("VAPID_PRIVATE_KEY") || "O3ozg0yGdukOzp0zLje6u8SNadoGfe9-gjKt7YB1YV0"
 );
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+};
+
 serve(async (req) => {
+  // Handle CORS preflight requests
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders });
+  }
+
   try {
     const supabaseClient = createClient(
       Deno.env.get("SUPABASE_URL") ?? "",
@@ -75,13 +85,13 @@ serve(async (req) => {
         });
 
         await Promise.all(pushPromises);
-        return new Response(JSON.stringify({ success: true, count: pushPromises.length }), { headers: { "Content-Type": "application/json" } });
+        return new Response(JSON.stringify({ success: true, count: pushPromises.length }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
     }
 
-    return new Response(JSON.stringify({ message: "No notification required" }), { headers: { "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ message: "No notification required" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (err) {
     console.error(err);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 });
