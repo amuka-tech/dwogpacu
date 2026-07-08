@@ -33,7 +33,15 @@ export default class ErrorBoundary extends React.Component {
             <div className="error-actions">
               <button 
                 className="btn btn-primary"
-                onClick={() => window.location.reload(true)}
+                onClick={async () => {
+                  if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
+                    for (let registration of registrations) {
+                      await registration.unregister();
+                    }
+                  }
+                  window.location.reload(true);
+                }}
               >
                 <RefreshCcw size={18} /> Restart Application
               </button>
