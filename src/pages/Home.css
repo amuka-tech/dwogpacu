@@ -110,6 +110,7 @@
   position: sticky;
   top: 80px;
   z-index: 100;
+  background-color: var(--bg-secondary);
   border-radius: 0;
   border-top: none;
   border-left: none;

@@ -75,20 +75,31 @@
 }
 
 @media (max-width: 768px) {
+  .logo-text {
+    font-size: 1.2rem;
+  }
+  .header-right {
+    gap: 0.25rem;
+  }
   .mobile-menu-btn {
     display: block;
+    margin-left: 0.25rem;
   }
   
   .nav-menu {
-    position: absolute;
+    position: fixed;
     top: 80px;
     left: 0;
     width: 100%;
-    background: var(--bg-secondary);
-    padding: 2rem;
-    border-bottom: 1px solid var(--border-color);
+    height: calc(100vh - 80px);
+    background: rgba(var(--bg-rgb-base), 0.98);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 3rem 2rem;
+    border-bottom: none;
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-    transition: clip-path 0.4s ease-in-out;
+    transition: clip-path 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    overflow-y: auto;
   }
   
   .nav-menu.open {
@@ -98,7 +109,30 @@
   .nav-list {
     flex-direction: column;
     align-items: center;
-    gap: 1.5rem;
+    justify-content: flex-start;
+    gap: 2rem;
+  }
+  
+  .nav-link {
+    font-size: 1.5rem;
+    padding: 0.5rem 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-text {
+    font-size: 1rem;
+  }
+  .logo-icon {
+    height: 28px !important;
+  }
+  .header-live-badge {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+  }
+  .admin-link {
+    width: 32px;
+    height: 32px;
   }
 }
 

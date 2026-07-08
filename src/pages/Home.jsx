@@ -157,7 +157,7 @@ export default function Home() {
       </section>
 
       {/* ── QUICK STATS BAR ──────────────────────── */}
-      <section className="stats-bar glass">
+      <section className="stats-bar">
         <div className="container stats-bar-inner">
           {[
             { icon: <Users size={22} />, value: '21', label: 'Teams' },
