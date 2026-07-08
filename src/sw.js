@@ -9,7 +9,7 @@ self.addEventListener('push', function (event) {
     const data = event.data.json();
     const options = {
       body: data.body,
-      icon: '/dwogpacu/web-app-manifest-192x192.png',
+      icon: 'https://amuka-tech.github.io/dwogpacu/web-app-manifest-192x192.png',
       vibrate: [200, 100, 200, 100, 200, 100, 200],
       requireInteraction: true,
       data: {
