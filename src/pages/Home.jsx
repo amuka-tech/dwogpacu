@@ -145,7 +145,7 @@ export default function Home() {
             </h1>
             <p className="hero-sub">
               The premier football showdown across constituencies & municipalities of Lira region.
-              21 teams. 58 matches. One Champion.
+              21 teams. {fixtures.length} matches. One Champion.
             </p>
             <Countdown targetDate={finalDate} label="Until the Grand Final · August 2, 2026" />
             <div className="hero-ctas">
@@ -161,7 +161,7 @@ export default function Home() {
         <div className="container stats-bar-inner">
           {[
             { icon: <Users size={22} />, value: '21', label: 'Teams' },
-            { icon: <Calendar size={22} />, value: '58', label: 'Matches' },
+            { icon: <Calendar size={22} />, value: fixtures.length, label: 'Matches' },
             { icon: <Activity size={22} />, value: completedCount, label: 'Played' },
             { icon: <MapPin size={22} />, value: '2', label: 'Venues' },
             { icon: <Trophy size={22} />, value: '4', label: 'Groups' },
