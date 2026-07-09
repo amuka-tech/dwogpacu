@@ -33,6 +33,24 @@
   padding: 0.2rem 0.7rem;
   border-radius: var(--radius-full);
 }
+.group-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.tbl-action-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  width: 30px; height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.tbl-action-btn:hover { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
 
 .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }
 

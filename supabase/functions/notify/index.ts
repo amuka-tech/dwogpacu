@@ -37,22 +37,41 @@ serve(async (req) => {
       let title = "";
       let body = "";
 
-      // Logic to determine if a goal was scored
+      // Goals
       if (newRecord.home_score > oldRecord.home_score || newRecord.away_score > oldRecord.away_score) {
         const home = newRecord.home_team || 'Home';
         const away = newRecord.away_team || 'Away';
         title = `⚽ GOAL! ${home} ${newRecord.home_score} - ${newRecord.away_score} ${away}`;
         body = "Live Score Update";
       } else if (newRecord.is_live && !oldRecord.is_live) {
+        // Kickoff
         const home = newRecord.home_team || 'Home';
         const away = newRecord.away_team || 'Away';
         title = `🔴 KICKOFF! ${home} vs ${away}`;
         body = "Match is live now!";
       } else if (!newRecord.is_live && oldRecord.is_live) {
+        // Full time
         const home = newRecord.home_team || 'Home';
         const away = newRecord.away_team || 'Away';
         title = `🏁 FULL TIME! ${home} ${newRecord.home_score} - ${newRecord.away_score} ${away}`;
         body = "Match has ended.";
+      } else {
+        // Check for new card events
+        const oldEvents: any[] = oldRecord.events || [];
+        const newEvents: any[] = newRecord.events || [];
+        if (newEvents.length > oldEvents.length) {
+          const latestEvent = newEvents[newEvents.length - 1];
+          const teamName = latestEvent.teamId === newRecord.home_team_id
+            ? (newRecord.home_team || 'Home')
+            : (newRecord.away_team || 'Away');
+          if (latestEvent.type === 'yellow') {
+            title = `🟡 YELLOW CARD`;
+            body = `${latestEvent.player} (${teamName}) receives a yellow card — ${latestEvent.minute}'`;
+          } else if (latestEvent.type === 'red') {
+            title = `🔴 RED CARD!`;
+            body = `${latestEvent.player} (${teamName}) is sent off! — ${latestEvent.minute}'`;
+          }
+        }
       }
 
       // If we have a notification to send

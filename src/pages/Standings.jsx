@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useTournament } from '../context/TournamentContext';
 import { TEAMS } from '../data/teams';
-import { TrendingUp } from 'lucide-react';
+import { TrendingUp, Share2, Download } from 'lucide-react';
+import { shareContent, downloadElementAsImage } from '../utils/sharing';
+import { toast } from 'react-hot-toast';
 import './Standings.css';
 
 const FORM_COLORS = { W: '#00ff88', D: '#f59e0b', L: '#ff0055' };
@@ -16,6 +18,28 @@ function FormBadge({ result }) {
 function GroupTable({ group, rows }) {
   const [sortCol, setSortCol] = useState(null);
   const [sortAsc, setSortAsc] = useState(false);
+  const cardRef = useRef(null);
+
+  const handleShare = async () => {
+    const top2 = rows.slice(0, 2).map(r => r.team.shortName).join(' & ');
+    const res = await shareContent(
+      `Group ${group} Standings | DWOG PACU CUP 2026`,
+      `🏆 Group ${group} leaders: ${top2} | DWOG PACU CUP 2026`,
+      '/dwogpacu/#/standings'
+    );
+    if (res.method === 'clipboard') toast.success('Link copied!');
+  };
+
+  const handleExport = async () => {
+    if (!cardRef.current) return;
+    toast.loading('Generating image...', { id: 'export' });
+    try {
+      await downloadElementAsImage(cardRef.current, `Group_${group}_Standings`);
+      toast.success('Image saved!', { id: 'export' });
+    } catch (e) {
+      toast.error('Export failed', { id: 'export' });
+    }
+  };
 
   const handleSort = (col) => {
     if (sortCol === col) setSortAsc(a => !a);
@@ -41,10 +65,18 @@ function GroupTable({ group, rows }) {
   ];
 
   return (
-    <div className="group-table-card glass">
+    <div className="group-table-card glass" ref={cardRef}>
       <div className="group-table-header">
         <h3>Group {group}</h3>
-        <span className="team-count">{rows.length} teams</span>
+        <div className="group-table-actions">
+          <span className="team-count">{rows.length} teams</span>
+          <button className="tbl-action-btn" onClick={handleShare} title="Share group table">
+            <Share2 size={15}/>
+          </button>
+          <button className="tbl-action-btn" onClick={handleExport} title="Download as image">
+            <Download size={15}/>
+          </button>
+        </div>
       </div>
 
       <div className="table-scroll">

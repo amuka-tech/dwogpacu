@@ -1,9 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Shield, ArrowLeft, Clock, MapPin, Calendar } from 'lucide-react';
+import { Shield, ArrowLeft, Clock, MapPin, Calendar, Share2 } from 'lucide-react';
 import { useTournament } from '../context/TournamentContext';
 import { TEAMS } from '../data/teams';
 import { getTeamForm } from '../utils/tournamentEngine';
+import { shareContent } from '../utils/sharing';
+import { toast } from 'react-hot-toast';
 import './MatchDetails.css';
 
 export default function MatchDetails() {
@@ -31,6 +33,23 @@ export default function MatchDetails() {
 
   const [activeTab, setActiveTab] = useState('events');
   const events = [...(result.events || [])].sort((a, b) => a.minute - b.minute);
+
+  const handleShare = async () => {
+    const homeName = home?.name || fixture.homeTeamId;
+    const awayName = away?.name || fixture.awayTeamId;
+    let title, text;
+    if (result.homeScore !== null) {
+      title = `⚽ ${homeName} ${result.homeScore}–${result.awayScore} ${awayName}`;
+      text = result.isLive
+        ? `🔴 LIVE: ${homeName} ${result.homeScore}–${result.awayScore} ${awayName} | DWOG PACU CUP 2026`
+        : `🏁 FT: ${homeName} ${result.homeScore}–${result.awayScore} ${awayName} | DWOG PACU CUP 2026`;
+    } else {
+      title = `${homeName} vs ${awayName}`;
+      text = `⚽ Upcoming: ${homeName} vs ${awayName} | ${fixture.date} ${fixture.time} | DWOG PACU CUP 2026`;
+    }
+    const res = await shareContent(title, text, `/dwogpacu/#/match/${fixture.id}`);
+    if (res.method === 'clipboard') toast.success('Link copied to clipboard!');
+  };
   
   const homeFormation = result.homeFormation || '';
   const awayFormation = result.awayFormation || '';
@@ -57,9 +76,14 @@ export default function MatchDetails() {
       <section className="md-scoreboard">
         <div className="md-overlay"></div>
         <div className="container md-scoreboard-inner">
-          <button onClick={() => navigate(-1)} className="back-link md-back btn-clear">
-            <ArrowLeft size={16}/> Back
-          </button>
+          <div className="md-top-row">
+            <button onClick={() => navigate(-1)} className="back-link md-back btn-clear">
+              <ArrowLeft size={16}/> Back
+            </button>
+            <button onClick={handleShare} className="btn-clear md-share-btn" title="Share this match">
+              <Share2 size={18}/> Share
+            </button>
+          </div>
           
           <div className="md-meta">
             <span className="badge badge-group">{fixture.group ? `Group ${fixture.group}` : fixture.stage}</span>

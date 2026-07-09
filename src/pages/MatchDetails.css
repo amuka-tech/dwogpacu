@@ -24,9 +24,28 @@
   gap: 1rem;
 }
 
+.md-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
 .md-back {
   align-self: flex-start;
 }
+.md-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 0.4rem 1rem;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: var(--radius-full);
+  transition: background 0.2s, color 0.2s;
+}
+.md-share-btn:hover { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
 .btn-clear {
   background: none;
   border: none;

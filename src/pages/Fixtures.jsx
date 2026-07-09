@@ -2,7 +2,9 @@ import React, { useState, useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTournament } from '../context/TournamentContext';
 import { TEAMS } from '../data/teams';
-import { Calendar, MapPin, Clock, Filter, ChevronDown, ChevronUp, Shield, Search } from 'lucide-react';
+import { Calendar, MapPin, Clock, Filter, ChevronDown, ChevronUp, Shield, Search, CalendarPlus, Share2 } from 'lucide-react';
+import { downloadFixturesICS, shareContent } from '../utils/sharing';
+import { toast } from 'react-hot-toast';
 import './Fixtures.css';
 
 const STATUS_LABELS = { upcoming: 'Upcoming', live: 'Live', completed: 'FT' };
@@ -106,6 +108,20 @@ function FixtureCard({ fixture, result }) {
 export default function Fixtures() {
   const { fixtures, results } = useTournament();
 
+  const handleCalendar = () => {
+    downloadFixturesICS(fixtures);
+    toast.success('Calendar file downloaded!');
+  };
+
+  const handleShare = async () => {
+    const res = await shareContent(
+      'DWOG PACU CUP 2026 Fixtures',
+      '⚽ Check out the full match schedule for DWOG PACU CUP 2026!',
+      '/dwogpacu/#/fixtures'
+    );
+    if (res.method === 'clipboard') toast.success('Link copied to clipboard!');
+  };
+
   const [openDays, setOpenDays] = useState({ 'Opening Ceremony': true, 'Match Day One': true });
   const [filterGroup, setFilterGroup] = useState('All');
   const [filterVenue, setFilterVenue] = useState('All');
@@ -166,6 +182,14 @@ export default function Fixtures() {
           <p className="section-subheading">
             {completedCount} of {fixtures.filter(f => f.stage === 'group').length} group stage matches played · {fixtures.length} total fixtures
           </p>
+          <div className="fx-header-actions">
+            <button className="btn btn-secondary fx-action-btn" onClick={handleCalendar}>
+              <CalendarPlus size={16}/> Add to Calendar
+            </button>
+            <button className="btn btn-secondary fx-action-btn" onClick={handleShare}>
+              <Share2 size={16}/> Share Schedule
+            </button>
+          </div>
         </div>
 
         {/* Filters */}
