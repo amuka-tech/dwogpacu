@@ -3,6 +3,13 @@ import { precacheAndRoute } from 'workbox-precaching';
 // This is required for Vite PWA to inject the precache manifest
 precacheAndRoute(self.__WB_MANIFEST);
 
+// Handle PWA update (SKIP_WAITING)
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
+});
+
 // Handle Push Events
 self.addEventListener('push', function (event) {
   if (event.data) {

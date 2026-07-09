@@ -22,12 +22,23 @@ export default function UpdatePrompt() {
 
   if (!needRefresh) return null;
 
+  const [isReloading, setIsReloading] = React.useState(false);
+
+  const handleUpdate = () => {
+    setIsReloading(true);
+    updateServiceWorker(true);
+    // Fallback: forcefully reload if the SW doesn't reload the page within 2 seconds
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
+  };
+
   return (
     <div className="update-prompt-container animate-slide-up">
       <div className="update-prompt-card glass">
         <div className="update-prompt-content">
           <div className="update-prompt-icon">
-            <RefreshCw size={24} className="spin-slow" />
+            <RefreshCw size={24} className={isReloading ? "spin-fast" : "spin-slow"} />
           </div>
           <div className="update-prompt-text">
             <h4>Update Available!</h4>
@@ -35,10 +46,10 @@ export default function UpdatePrompt() {
           </div>
         </div>
         <div className="update-prompt-actions">
-          <button className="btn btn-primary" onClick={() => updateServiceWorker(true)}>
-            Reload to Update
+          <button className="btn btn-primary" onClick={handleUpdate} disabled={isReloading}>
+            {isReloading ? 'Reloading...' : 'Reload to Update'}
           </button>
-          <button className="btn-close" onClick={close} aria-label="Close">
+          <button className="btn-close" onClick={close} aria-label="Close" disabled={isReloading}>
             <X size={20} />
           </button>
         </div>
