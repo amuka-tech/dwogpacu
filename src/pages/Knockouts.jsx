@@ -73,13 +73,13 @@ const Knockouts = () => {
                     <div className="matchup-header highlight">{final.date}</div>
                     <div className="matchup-team">
                       <span className={`team-name ${!final.homeTeamId ? 'text-muted' : ''}`}>
-                        {final.homeTeamId ? TEAMS[final.homeTeamId]?.name : 'Winner SF 1'}
+                        {final.homeTeamId ? (TEAMS[final.homeTeamId]?.name || final.homeTeamId) : 'Winner SF 1'}
                       </span>
                       <span className="team-score">{results[final.id]?.homeScore ?? '-'}</span>
                     </div>
                     <div className="matchup-team">
                       <span className={`team-name ${!final.awayTeamId ? 'text-muted' : ''}`}>
-                        {final.awayTeamId ? TEAMS[final.awayTeamId]?.name : 'Winner SF 2'}
+                        {final.awayTeamId ? (TEAMS[final.awayTeamId]?.name || final.awayTeamId) : 'Winner SF 2'}
                       </span>
                       <span className="team-score">{results[final.id]?.awayScore ?? '-'}</span>
                     </div>
