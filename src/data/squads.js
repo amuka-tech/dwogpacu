@@ -497,6 +497,10 @@ export const SQUADS = {
       {
         "no": "",
         "name": "Omeri Solomon"
+      },
+      {
+        "no": "",
+        "name": "DOKOLO SOUTH"
       }
     ],
     "coach": "Ronald Okello"
@@ -1224,6 +1228,38 @@ export const SQUADS = {
         "name": "Okello Emmy Ben"
       }
     ],
+    "coach": null
+  },
+  "18. Okech Maxwell (GK), 22. Opio Donal, 25. Odongo Stephen, 06. Obua Emmanuel, 03. Otim Daniel, 05. Ogwang Joel, 06. Okello Emmanuel, 09. Aguma Daniel, 11. Alany Patrick, 07. Okeng Emmanuel, 10. Otim Hudson, 20. Ocoman Moses, 21. Madima Vincent, 23. Euku Simon, 24. Opio Joe (GK), 01. Otim Samuel, 17. Awany Ambrose, 23. Ochero Daniel, 08. Enon Sam, 14. Atia Daniel, 15. Obira Richard, 12. Omedi Ambrose, 16. Ogwang Amos, 04. Odoch Emmanuel, 19. Oree Douglas": {
+    "players": [],
+    "coach": null
+  },
+  "24. Ogwang Victor (GK), 06. Kirya Gerald, 14. Obote Daniel, 19/02. Ongora Isaac, 04. Bwangani Amis, 22. Oryekot Amos, 10. Ochero Solomon, 08. Omara Joshua, 11. Ogwal Hedmond, 21. Ogwang Augustine, 07. Aliro Moses Okabo (C), 15. Dada Ibrahim, 09. Opiro Justine, 03. Okwany Amos, 18. Obaru Raphael, 16. Etabu James Obura, 20. Aguma Jasper, 17. Omara Silvano, 12. Opiro Justine, Olake Oluka, Awany Hedimond, Poro Jonathan": {
+    "players": [],
+    "coach": null
+  },
+  "18. Ochola Steven (GK), 15. Alele Ambrose, 12. Ojok Walter, 16. Orebe Jacob, 03. Obete Allan, 06. Ekengu Bonny, 17. Alele Innocent, 08. Oyirworth Desmond, 20. Ocen Zacherous, 07. Edwok Ronald (C), 14. Ocan Musa, 13. Ayo Cryspaus, 01. Olila Moses (GK), 05. Okwir Calvin, 04. Ayok Norman, 11. Okello Boniface, 10. Edunyu Lazarus, 02. Eyetu Isaac, 19. Odur Eric, 20. Toli Dickens": {
+    "players": [],
+    "coach": null
+  },
+  "25. Kyamera Tonny (GK), 05. Ogwal Brian, 03. Orom Henry Bishop, 04. Ojok Shadrack, 21. Ocen Emmanuel Manu, 18. Nyanga Oscar, 08. Ogwal Noel Andrea, 17. Oketch Emmanuel Janan (C), 10. Okello Allan, 20. Oonyu Erias Paul, 16. Musa Ramathan, 13. Fazil Rajab, 31. Olwol Jesse Fred (GK), 14. Otim Daniel, 06. Odongo Marcus, 23. Okuja Innocent, 07. Obira Rogers, 15. Ongom Emmanuel, 09. Okello Daniel, 11. Okocha Steven, 19. Omara Bob, 12. Atono Erick": {
+    "players": [],
+    "coach": null
+  },
+  "1. Bidong Gildo (GK), 03. Ocen Emmanuel, 15. Ongar Allan, 05. Ocung Pit Simon Peter, 12. Akaro Peter, 08. Ekol Emmanuel (C), 10. Okello Alex, 11. Ojok Dan, 07. Okello Denis, 09. Nangosya Samuel, 16. Ecel Henry, 25. Okello Ronald, 18. Abdu Somart, 19. Odaga Emmanuel, 17. Komakech Benson, 16. Odomch Innocent, 06. Lubangakene Francis, 19. Ocira Francis": {
+    "players": [],
+    "coach": null
+  },
+  "1. Otiga Daniel (GK), 17. Owiny Oscar, 20. Okello Poul, 16. Enach Amos, 13. Opul Julas, 15. Olum Derrick (C), 11. Anyoti Daniel, 10. Okello Salim, 09. Opio Daniel, 03. Omol Erric Solomon, 05. Okello Kenneth, 18. Ogwl Ronald (GK), 08. Dida Robinson, 06. Odongo Joshua, 07. Egum Oscar, 19. Okello Mark, 22. Ocen Dan, 14. Ocen Darrius": {
+    "players": [],
+    "coach": null
+  },
+  "1. Oluka William (GK), 17. Omojo Robert (C), 03. Okot Brian, 02. Adoko Joshua, 20. Olila Brian, 06. Ouzo Solomon, 23. Okii Ivan, 10. Olwoc Emmy, 08. Pule Roy Rudiger, 15. Ocama Richmond, 07. Acar Jack, 04. Toolit Oscar, 09. Anang Ivan, 12. Ogweng Lawrence, 13. Opio Gaston, 16. Okello Luke, 19. Okello Innocent, 18. Opio Angec": {
+    "players": [],
+    "coach": null
+  },
+  "1. Tyan Lawrence (GK), 22. Eling Denis, 21. Emor Geoffrey, 02. Odur Emmanuel, 05. Opolot Solomon, 03. Odongo Solomon (C), 11. Okello Denis, 14. Oloro Nathan, 09. Obete Emmanuel, 07. Omara Abdallah Aziz, 15. Kigozi Ambrose, 25. Ogena Arafat, 12. Eporu Andrew, 10. Okwir Dickens, 20. Aliro Thomas, 13. Taikire Amos, 04. Ongom Hudson, 06. Olum Ivan": {
+    "players": [],
     "coach": null
   }
 };
