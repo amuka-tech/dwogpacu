@@ -390,6 +390,7 @@ export default function Admin() {
     results,
     liveMatches,
     updateMatchResult, 
+    removeMatchResult,
     addMatchEvent, 
     removeMatchEvent, 
     updateLineups 
@@ -416,7 +417,7 @@ export default function Admin() {
   };
 
   const handleResetMatch = (matchId) => {
-    updateMatchResult(matchId, null, null, false, "");
+    removeMatchResult(matchId);
   };
 
   const handleAddEvent = (matchId, event) => {
