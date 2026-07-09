@@ -6,6 +6,8 @@ import { TEAMS } from '../data/teams';
 import { getTeamForm } from '../utils/tournamentEngine';
 import { shareContent } from '../utils/sharing';
 import { toast } from 'react-hot-toast';
+import MatchPrediction from '../components/MatchPrediction';
+import MotmVoting from '../components/MotmVoting';
 import './MatchDetails.css';
 
 export default function MatchDetails() {
@@ -203,6 +205,15 @@ export default function MatchDetails() {
             </div>
           </section>
         )}
+
+        {/* ── PREDICTION / MOTM ──────────────────── */}
+        <section className="md-section">
+          <MatchPrediction fixture={fixture} result={result} />
+        </section>
+
+        <section className="md-section">
+          <MotmVoting fixture={fixture} result={result} />
+        </section>
 
       </div>
     </div>

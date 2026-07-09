@@ -1,0 +1,154 @@
+.pred-lb-page { padding: 2rem 0 6rem; }
+
+.pred-scoring-guide {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.pred-score-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pred-score-icon {
+  font-size: 1.5rem;
+  width: 36px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.pred-score-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.pred-score-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.pred-score-pts {
+  margin-left: auto;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: var(--accent-primary);
+}
+
+/* My rank banner */
+.pred-my-rank {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-top-color: #d4af37 !important;
+}
+
+.pred-my-icon { color: #d4af37; flex-shrink: 0; }
+
+.pred-my-label { font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; }
+.pred-my-name { font-weight: 700; font-size: 1rem; }
+
+.pred-my-stats {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.pred-my-stats span:first-child {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  color: #d4af37;
+}
+
+.pred-my-sep { color: var(--text-muted); }
+
+/* Leaderboard table */
+.pred-lb-card {
+  max-width: 600px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.pred-lb-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+.pred-lb-table th {
+  padding: 0.75rem 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-color);
+  background: rgba(0,0,0,0.2);
+}
+
+.pred-lb-table td {
+  padding: 0.9rem 1rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  font-size: 0.9rem;
+}
+
+.pred-lb-table tbody tr:last-child td { border-bottom: none; }
+
+.pred-lb-table tbody tr:hover td { background: rgba(255,255,255,0.03); }
+
+.pred-lb-me td { background: rgba(227,49,23,0.07); }
+.pred-lb-me:hover td { background: rgba(227,49,23,0.1) !important; }
+
+.pred-lb-rank {
+  width: 50px;
+  font-weight: 800;
+  color: var(--text-secondary);
+}
+
+.rank-gold { color: #d4af37; }
+.rank-silver { color: #c0c0c0; }
+.rank-bronze { color: #cd7f32; }
+
+.pred-lb-nick {
+  text-align: left;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.pred-lb-you {
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--accent-primary);
+  color: #fff;
+  padding: 0.1rem 0.4rem;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.pred-lb-pts {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--accent-primary);
+}
+
+.pred-lb-loading,
+.pred-lb-empty {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-secondary);
+}

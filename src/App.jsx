@@ -14,6 +14,7 @@ import Admin from './pages/Admin';
 import TeamProfile from './pages/TeamProfile';
 import MatchDetails from './pages/MatchDetails';
 import Prizes from './pages/Prizes';
+import PredictionLeaderboard from './pages/PredictionLeaderboard';
 import { Toaster } from 'react-hot-toast';
 import ErrorBoundary from './components/ErrorBoundary';
 import InstallPrompt from './components/InstallPrompt';
@@ -41,6 +42,7 @@ function App() {
             <Route path="knockouts" element={<Knockouts />} />
             <Route path="stats" element={<Stats />} />
             <Route path="prizes" element={<Prizes />} />
+            <Route path="predictions" element={<PredictionLeaderboard />} />
             <Route path="admin" element={<Admin />} />
             <Route path="team/:id" element={<TeamProfile />} />
             <Route path="match/:id" element={<MatchDetails />} />

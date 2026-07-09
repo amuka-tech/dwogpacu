@@ -27,6 +27,7 @@ const Header = () => {
     { name: 'Prize Money', path: '/prizes' },
     { name: 'Knockouts', path: '/knockouts' },
     { name: 'Stats', path: '/stats' },
+    { name: '🎯 Predictions', path: '/predictions' },
     { name: 'Info', path: '/info' },
   ];
 

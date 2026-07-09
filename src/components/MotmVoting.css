@@ -1,0 +1,141 @@
+.motm-section {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  background: rgba(20, 20, 20, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-top: 3px solid #d4af37;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+
+.motm-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+.motm-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: #d4af37;
+}
+
+.motm-star {
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.motm-voted-badge {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #00ff88;
+  background: rgba(0,255,136,0.1);
+  border: 1px solid rgba(0,255,136,0.3);
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+}
+
+.motm-sub {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.motm-candidates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.motm-card {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-left: 3px solid var(--team-color, var(--accent-primary));
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  transition: background 0.2s, transform 0.15s;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-body);
+}
+
+.motm-card:hover:not(:disabled) {
+  background: rgba(255,255,255,0.08);
+  transform: translateX(4px);
+}
+
+.motm-card:disabled { cursor: default; }
+
+.motm-card.my-vote {
+  background: rgba(var(--team-color, 227,49,23), 0.12);
+  border-color: var(--team-color, var(--accent-primary));
+}
+
+.motm-card.winner .motm-player {
+  color: #d4af37;
+}
+
+.motm-card.voted-other {
+  opacity: 0.7;
+}
+
+.motm-trophy {
+  color: #d4af37;
+  flex-shrink: 0;
+}
+
+.motm-player {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.motm-team {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-right: auto;
+}
+
+.motm-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 100px;
+}
+
+.motm-bar {
+  height: 4px;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+  min-width: 2px;
+}
+
+.motm-pct {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  min-width: 30px;
+  text-align: right;
+}
+
+@media (max-width: 480px) {
+  .motm-section { padding: 1.25rem 1rem; }
+  .motm-bar-wrap { min-width: 70px; }
+}
