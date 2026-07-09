@@ -87,7 +87,7 @@ export default function TeamProfile() {
             </div>
             <div className="tp-stat-card">
               <Shield className="tp-stat-icon" />
-              <div className="tp-stat-val" style={{ fontSize: '1.25rem', display: 'flex', gap: '0.25rem', alignItems: 'center' }}>
+              <div className="tp-stat-val" style={{ fontSize: '1.75rem', display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{color: '#00ff88'}}>{stats.w ?? 0}W</span>
                 <span style={{color: 'var(--text-secondary)'}}>-</span>
                 <span style={{color: '#f59e0b'}}>{stats.d ?? 0}D</span>
