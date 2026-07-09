@@ -12,7 +12,7 @@ async function test() {
       record: { home_score: 1, away_score: 0, is_live: true, home_team: 'Test', away_team: 'Test2' }
     }
   });
-  console.log(res);
+  console.log(JSON.stringify(res.data, null, 2));
 }
 
 test();

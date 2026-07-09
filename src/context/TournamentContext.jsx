@@ -125,7 +125,7 @@ export function TournamentProvider({ children }) {
       const awayName = fixture ? TEAMS[fixture.awayTeamId]?.shortName || "Away" : "Away";
 
       // Directly invoke the Edge Function to send push notifications
-      supabase.functions.invoke('notify', {
+      const { data: invokeData, error: invokeError } = await supabase.functions.invoke('notify', {
         body: {
           type: 'UPDATE',
           table: 'matches',
@@ -138,7 +138,12 @@ export function TournamentProvider({ children }) {
             away_team: awayName
           }
         }
-      }).catch(err => console.error("Edge function push error:", err));
+      });
+      if (invokeError) {
+        console.error("Edge function push error:", invokeError);
+      } else {
+        console.log("Edge function success:", invokeData);
+      }
 
     } catch(err) {
       console.error("Failed to update result", err);
