@@ -1,6 +1,6 @@
 export const groups = {
   A: ["Kioga Constituency", "Erute South", "Oyam South", "Dokolo South", "Ajuri Constituency", "Apac Municipality"],
-  B: ["Kioga North", "Kole South", "Kwania Constituency", "Otuke Constituency", "Maaruzi North"],
+  B: ["Kioga North", "Kole South", "Kwania Constituency", "Otuke Constituency", "Maruzi North"],
   C: ["Lira City West", "Otuke East", "Dokolo North", "Moroto Constituency", "Erute North"],
   D: ["Kwania North", "Maruzi Constituency", "Oyam North", "Kole North", "Lira City East"]
 };
