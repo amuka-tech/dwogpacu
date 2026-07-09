@@ -144,7 +144,7 @@ export default function Home() {
               <span className="text-gradient">CUP 2026</span>
             </h1>
             <p className="hero-sub">
-              The premier football showdown across constituencies & municipalities of Lira region.
+              The premier constituency-based football tournament for the Lango Sub-region in Northern Uganda.
               21 teams. {fixtures.length} matches. One Champion.
             </p>
             <Countdown targetDate={finalDate} label="Until the Grand Final · August 2, 2026" />
