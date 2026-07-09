@@ -256,21 +256,67 @@ export function TournamentProvider({ children }) {
   const topScorers = useMemo(() => getTopScorers(results), [results]);
   const allCards = useMemo(() => getAllCards(results), [results]);
   
-  const liveMatches = useMemo(() => FIXTURES.filter(f => results[f.id]?.isLive), [results]);
+  const dynamicFixtures = useMemo(() => {
+    const updatedFixtures = JSON.parse(JSON.stringify(FIXTURES));
+    
+    const getTeam = (group, index, defaultId) => {
+      const team = standings?.[group]?.[index];
+      // Only populate if the team has played at least one match to avoid filling with unplayed teams
+      return team && team.played > 0 ? team.id : defaultId;
+    };
+
+    const winnerA = getTeam('A', 0, 'WINNER A');
+    const runnerA = getTeam('A', 1, 'RUNNER UP A');
+    const winnerB = getTeam('B', 0, 'WINNER B');
+    const runnerB = getTeam('B', 1, 'RUNNER UP B');
+    const winnerC = getTeam('C', 0, 'WINNER C');
+    const runnerC = getTeam('C', 1, 'RUNNER UP C');
+    const winnerD = getTeam('D', 0, 'WINNER D');
+    const runnerD = getTeam('D', 1, 'RUNNER UP D');
+
+    const updateFixture = (id, homeId, awayId) => {
+      const f = updatedFixtures.find(x => x.id === id);
+      if (f) { f.homeTeamId = homeId; f.awayTeamId = awayId; }
+    };
+
+    updateFixture('046', winnerA, runnerB);
+    updateFixture('047', winnerB, runnerA);
+    updateFixture('048', winnerC, runnerD);
+    updateFixture('049', winnerD, runnerC);
+
+    const getWinner = (matchId, defaultName) => {
+      const res = results[matchId];
+      if (!res || res.homeScore === null || res.awayScore === null) return defaultName;
+      if (res.homeScore > res.awayScore) {
+        return updatedFixtures.find(f => f.id === matchId)?.homeTeamId || defaultName;
+      } else if (res.awayScore > res.homeScore) {
+        return updatedFixtures.find(f => f.id === matchId)?.awayTeamId || defaultName;
+      }
+      return defaultName;
+    };
+
+    updateFixture('050', getWinner('046', 'WINNER QT 1'), getWinner('048', 'WINNER QT 3'));
+    updateFixture('051', getWinner('047', 'WINNER QT 2'), getWinner('049', 'WINNER QT 4'));
+    updateFixture('052', getWinner('050', 'WINNER SM 1'), getWinner('051', 'WINNER SM 2'));
+
+    return updatedFixtures;
+  }, [standings, results]);
+  
+  const liveMatches = useMemo(() => dynamicFixtures.filter(f => results[f.id]?.isLive), [dynamicFixtures, results]);
   const relevantFixtures = useMemo(() => {
     const d = new Date();
     const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    const todayMatches = FIXTURES.filter(f => f.isoDate === today);
+    const todayMatches = dynamicFixtures.filter(f => f.isoDate === today);
     if (todayMatches.length > 0) return { title: todayMatches[0].day, matches: todayMatches };
 
-    const upcoming = FIXTURES.filter(f => f.isoDate > today);
+    const upcoming = dynamicFixtures.filter(f => f.isoDate > today);
     if (upcoming.length > 0) {
       const nextDate = upcoming[0].isoDate;
       const nextMatches = upcoming.filter(f => f.isoDate === nextDate);
       return { title: nextMatches[0].day, matches: nextMatches };
     }
 
-    const past = [...FIXTURES].reverse().filter(f => f.isoDate < today);
+    const past = [...dynamicFixtures].reverse().filter(f => f.isoDate < today);
     if (past.length > 0) {
       const lastDate = past[0].isoDate;
       const lastMatches = past.filter(f => f.isoDate === lastDate);
@@ -278,14 +324,14 @@ export function TournamentProvider({ children }) {
     }
 
     return { title: "Fixtures", matches: [] };
-  }, []);
+  }, [dynamicFixtures]);
 
   const getResult = (id) => results[id] || null;
-  const getFixture = (id) => FIXTURES.find(f => f.id === id);
+  const getFixture = (id) => dynamicFixtures.find(f => f.id === id);
 
   return (
     <TournamentContext.Provider value={{
-      fixtures: FIXTURES,
+      fixtures: dynamicFixtures,
       teams: TEAMS,
       groups: GROUPS,
       results,
