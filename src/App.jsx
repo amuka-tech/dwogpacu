@@ -17,6 +17,7 @@ import Prizes from './pages/Prizes';
 import { Toaster } from 'react-hot-toast';
 import ErrorBoundary from './components/ErrorBoundary';
 import InstallPrompt from './components/InstallPrompt';
+import UpdatePrompt from './components/UpdatePrompt';
 import './App.css';
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
     <ErrorBoundary>
       <TournamentProvider>
         <InstallPrompt />
+        <UpdatePrompt />
         <Toaster position="top-center" toastOptions={{
           style: { background: '#222', color: '#fff', border: '1px solid #333' }
         }} />
