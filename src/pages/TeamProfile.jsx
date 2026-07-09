@@ -81,11 +81,6 @@ export default function TeamProfile() {
               <div className="tp-stat-lbl">Points</div>
             </div>
             <div className="tp-stat-card">
-              <Target className="tp-stat-icon" />
-              <div className="tp-stat-val">{stats.gf ?? 0} - {stats.ga ?? 0}</div>
-              <div className="tp-stat-lbl">Goals (F - A)</div>
-            </div>
-            <div className="tp-stat-card">
               <Zap className="tp-stat-icon" />
               <div className="tp-stat-val">{stats.p ?? 0}</div>
               <div className="tp-stat-lbl">Matches Played</div>
