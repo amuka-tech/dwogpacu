@@ -10,8 +10,10 @@ self.addEventListener('push', function (event) {
     const options = {
       body: data.body,
       icon: 'https://amuka-tech.github.io/dwogpacu/web-app-manifest-192x192.png',
+      badge: 'https://amuka-tech.github.io/dwogpacu/web-app-manifest-192x192.png',
       vibrate: [200, 100, 200, 100, 200, 100, 200],
-      requireInteraction: true,
+      // NOTE: requireInteraction is intentionally removed — it is NOT supported on
+      // Android and causes push notifications to fail silently on mobile browsers.
       data: {
         dateOfArrival: Date.now(),
         primaryKey: '2',

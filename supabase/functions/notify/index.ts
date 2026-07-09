@@ -3,7 +3,6 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.11.0";
 import webPush from "npm:web-push@3.6.7";
 
 // Configure Web Push with the VAPID keys we generated
-// We will set VAPID_PRIVATE_KEY via Supabase secrets
 webPush.setVapidDetails(
   "mailto:admin@dwogpacu.com",
   "BOl_ede4LbXQpsED0dXQp23ehRtecYLTz2I9QI9PpLVGgRqcQjmdYslWoe2R4YMfKJhs8Xm3oTHdyGKjd9Znme4",
@@ -65,7 +64,9 @@ serve(async (req) => {
 
         if (error) throw error;
 
-        // Send notifications in parallel
+        const expiredEndpoints: string[] = [];
+
+        // Send notifications in parallel with mobile-friendly options
         const pushPromises = subscriptions.map((sub) => {
           const pushSubscription = {
             endpoint: sub.endpoint,
@@ -74,26 +75,57 @@ serve(async (req) => {
               p256dh: sub.p256dh,
             },
           };
-          return webPush.sendNotification(pushSubscription, JSON.stringify({
-            title,
-            body,
-            url: "/dwogpacu/"
-          })).catch(err => {
-            console.error('Error sending to endpoint', sub.endpoint, err);
+
+          // Options critical for mobile delivery:
+          // - TTL: 60s means FCM will try for 60s to deliver (not drop immediately)
+          // - urgency: 'high' bypasses battery optimization / Doze mode on Android
+          const pushOptions = {
+            TTL: 60,
+            urgency: 'high' as const,
+          };
+
+          return webPush.sendNotification(
+            pushSubscription,
+            JSON.stringify({ title, body, url: "/dwogpacu/" }),
+            pushOptions
+          ).then(() => {
+            return { endpoint: sub.endpoint, success: true };
+          }).catch((err) => {
+            console.error('Push error for endpoint', sub.endpoint, 'Status:', err.statusCode, 'Body:', err.body);
+            // 410 Gone = subscription is expired/unsubscribed — remove it from DB
+            if (err.statusCode === 410 || err.statusCode === 404) {
+              expiredEndpoints.push(sub.endpoint);
+            }
             return { endpoint: sub.endpoint, error: err.message || err.toString(), statusCode: err.statusCode, body: err.body };
           });
         });
 
         const results = await Promise.all(pushPromises);
-        const errors = results.filter(r => r && r.error);
+
+        // Clean up expired subscriptions so we don't keep sending to dead endpoints
+        if (expiredEndpoints.length > 0) {
+          console.log('Removing expired subscriptions:', expiredEndpoints);
+          await supabaseClient
+            .from('subscriptions')
+            .delete()
+            .in('endpoint', expiredEndpoints);
+        }
+
+        const errors = results.filter(r => r && (r as any).error);
+        const successes = results.filter(r => r && (r as any).success);
         
-        return new Response(JSON.stringify({ success: true, count: pushPromises.length, errors }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
+        console.log(`Sent: ${successes.length}/${subscriptions.length}, Errors: ${errors.length}, Cleaned: ${expiredEndpoints.length}`);
+        
+        return new Response(
+          JSON.stringify({ success: true, total: subscriptions.length, sent: successes.length, errors, cleaned: expiredEndpoints.length }),
+          { headers: { ...corsHeaders, "Content-Type": "application/json" } }
+        );
       }
     }
 
     return new Response(JSON.stringify({ message: "No notification required" }), { headers: { ...corsHeaders, "Content-Type": "application/json" } });
   } catch (err) {
     console.error(err);
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
+    return new Response(JSON.stringify({ error: (err as Error).message }), { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } });
   }
 });
