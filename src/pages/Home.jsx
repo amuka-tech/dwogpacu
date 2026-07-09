@@ -150,7 +150,7 @@ export default function Home() {
             <Countdown targetDate={finalDate} label="Until the Grand Final · August 2, 2026" />
             <div className="hero-ctas">
               <Link to="/fixtures" className="btn btn-primary"><Zap size={18} /> Fixtures</Link>
-              <Link to="/standings" className="btn btn-secondary"><Trophy size={18} /> View Standings</Link>
+              <Link to="/standings" className="btn btn-secondary"><Trophy size={18} /> Table Standings</Link>
             </div>
           </div>
         </div>
