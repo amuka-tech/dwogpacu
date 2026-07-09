@@ -260,9 +260,51 @@ export function TournamentProvider({ children }) {
     const updatedFixtures = JSON.parse(JSON.stringify(FIXTURES));
     
     const getTeam = (group, index, defaultId) => {
-      const team = standings?.[group]?.[index];
-      // Only populate if the team has played at least one match to avoid filling with unplayed teams
-      return team && team.played > 0 ? team.id : defaultId;
+      const groupStandings = standings?.[group];
+      if (!groupStandings) return defaultId;
+      
+      const team = groupStandings[index];
+      if (!team) return defaultId;
+      
+      const totalMatches = groupStandings.length - 1;
+      
+      if (index === 0) {
+        // To be locked in 1st, Team 0 must be unreachable by ANY team below them
+        for (let i = 1; i < groupStandings.length; i++) {
+          const opp = groupStandings[i];
+          const oppRemaining = totalMatches - opp.p;
+          const oppMaxPts = opp.pts + (oppRemaining * 3);
+          if (oppRemaining > 0 && oppMaxPts >= team.pts) return defaultId;
+        }
+        return team.id;
+      }
+      
+      if (index === 1) {
+        // To be locked in 2nd, Team 0 must be locked in 1st
+        let team0Locked = true;
+        const team0 = groupStandings[0];
+        for (let i = 1; i < groupStandings.length; i++) {
+          const opp = groupStandings[i];
+          const oppRemaining = totalMatches - opp.p;
+          const oppMaxPts = opp.pts + (oppRemaining * 3);
+          if (oppRemaining > 0 && oppMaxPts >= team0.pts) {
+            team0Locked = false;
+            break;
+          }
+        }
+        if (!team0Locked) return defaultId;
+        
+        // And Team 1 must be unreachable by ANY team below them (teams 2, 3, etc)
+        for (let i = 2; i < groupStandings.length; i++) {
+          const opp = groupStandings[i];
+          const oppRemaining = totalMatches - opp.p;
+          const oppMaxPts = opp.pts + (oppRemaining * 3);
+          if (oppRemaining > 0 && oppMaxPts >= team.pts) return defaultId;
+        }
+        return team.id;
+      }
+      
+      return defaultId;
     };
 
     const winnerA = getTeam('A', 0, 'WINNER A');
