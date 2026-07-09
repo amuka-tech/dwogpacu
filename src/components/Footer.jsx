@@ -22,6 +22,7 @@ const Footer = () => {
             <ul className="footer-links">
               <li><a href="#/fixtures">Fixtures & Results</a></li>
               <li><a href="#/standings">Group Standings</a></li>
+              <li><a href="#/prizes">Prize Money</a></li>
               <li><a href="#/groups">Teams & Groups</a></li>
               <li><a href="#/info">Tournament Rules</a></li>
             </ul>

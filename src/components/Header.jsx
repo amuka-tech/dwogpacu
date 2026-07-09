@@ -24,6 +24,7 @@ const Header = () => {
     { name: 'Teams', path: '/groups' },
     { name: 'Fixtures & Results', path: '/fixtures' },
     { name: 'Standings', path: '/standings' },
+    { name: 'Prize Money', path: '/prizes' },
     { name: 'Knockouts', path: '/knockouts' },
     { name: 'Stats', path: '/stats' },
     { name: 'Info', path: '/info' },
