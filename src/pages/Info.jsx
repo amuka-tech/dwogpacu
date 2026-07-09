@@ -19,8 +19,14 @@ const Info = () => {
               <h2 className="info-title"><Trophy className="info-icon" /> Background & Objectives</h2>
               <img src={aboutImg} alt="Tournament Action" className="info-image" />
               <div className="info-text">
-                <p>The DWOG PACU CUP 2026 is a premier football tournament designed to foster unity, talent discovery, and community engagement across the constituencies and municipalities of the Lira region.</p>
-                <p>Bringing together 21 elite teams divided into 4 competitive groups, this month-long football fiesta promises high-octane action, exceptional sportsmanship, and a celebration of our local heritage through the beautiful game.</p>
+                <p>The Dwog Pacu Cup is an annual constituency-based football tournament for the Lango Sub-region in Northern Uganda. Run by the Dwog Pacu Foundation, "Dwog Pacu" translates to "Come Back Home". The competition focuses on unifying the community, local talent development, environmental conservation through tree planting, and providing school bursaries.</p>
+                <p>The 2026 Second Edition is actively underway following its official launch in Lira City. Matches are currently being played across venues like the Lira Technical College (LTC) grounds and UTC Lira. Kyoga Constituency enters the tournament as the defending champions after winning the inaugural 2025 edition.</p>
+                
+                <h3 style={{ marginTop: '1.5rem', marginBottom: '1rem', color: 'var(--accent-primary)' }}>Key Tournament Details</h3>
+                <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: 'var(--text-primary)' }}>Participants:</strong> Teams representing 21 constituencies across the Lango region take part in the tournament.</li>
+                  <li><strong style={{ color: 'var(--text-primary)' }}>Defending Champions:</strong> Kyoga Constituency, who claimed the 1st edition title by defeating Lira City West 3-0 in the final.</li>
+                </ul>
               </div>
             </section>
 
@@ -40,7 +46,7 @@ const Info = () => {
                 <div className="format-step">
                   <div className="step-number">3</div>
                   <h3>Semi-Finals</h3>
-                  <p>Winners of the Quarter-finals battle in two-legged Semi-final matches to secure a spot in the final.</p>
+                  <p>Winners of the Quarter-finals battle in single-leg Semi-final matches to secure a spot in the final.</p>
                 </div>
                 <div className="format-step">
                   <div className="step-number">4</div>
