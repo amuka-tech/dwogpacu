@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Shield, ArrowLeft, MapPin, Calendar, Clock, Trophy, Target, Zap, Users } from 'lucide-react';
+import { Shield, ArrowLeft, MapPin, Calendar, Clock, Trophy, Target, Zap, Users, Coins } from 'lucide-react';
 import { TEAMS } from '../data/teams';
 import { SQUADS } from '../data/squads';
 import { useTournament } from '../context/TournamentContext';
@@ -94,6 +94,15 @@ export default function TeamProfile() {
               <Shield className="tp-stat-icon" />
               <div className="tp-stat-val">{stats.w ?? 0}</div>
               <div className="tp-stat-lbl">Wins</div>
+            </div>
+            <div className="tp-stat-card">
+              <Coins className="tp-stat-icon" style={{ color: '#00ff88' }} />
+              <div className="tp-stat-val" style={{ color: '#00ff88' }}>
+                {(((stats.w ?? 0) * 200000) + ((stats.d ?? 0) * 100000)) > 0 
+                  ? `${((((stats.w ?? 0) * 200000) + ((stats.d ?? 0) * 100000)) / 1000)}k` 
+                  : '0'}
+              </div>
+              <div className="tp-stat-lbl">Prize (UGX)</div>
             </div>
           </div>
         </section>
