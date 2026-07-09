@@ -113,11 +113,31 @@
   color: #00ff88;
 }
 
+.prize-table .hide-desktop {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .prize-table-header {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
+  }
+  
+  .prize-table .hide-mobile {
+    display: none !important;
+  }
+  
+  .prize-table .hide-desktop {
+    display: inline;
+  }
+  
+  .prize-table .team-full {
+    display: none;
+  }
+  
+  .prize-table td, .prize-table th {
+    padding: 0.75rem 0.5rem;
   }
 }
 
