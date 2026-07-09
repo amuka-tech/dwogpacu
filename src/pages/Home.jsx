@@ -245,6 +245,51 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── FOOTBALL WITH A PURPOSE ────────────────── */}
+      <section className="section" style={{ background: 'var(--bg-secondary)' }}>
+        <div className="container">
+          <div className="section-title-row" style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center', marginBottom: '3rem' }}>
+            <span className="badge badge-group" style={{ marginBottom: '1rem' }}>Beyond The Pitch</span>
+            <h2 className="section-h2" style={{ fontSize: '2.5rem', color: 'var(--accent-primary)' }}>"Football with a Purpose"</h2>
+            <p style={{ color: 'var(--text-secondary)', maxWidth: '600px', margin: '1rem auto 0' }}>
+              The Dwog Pacu Foundation ensures the tournament achieves socio-economic goals far beyond just sports in Northern Uganda.
+            </p>
+          </div>
+          
+          <div className="widgets-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
+            <div className="glass" style={{ padding: '2rem', borderRadius: '1rem', textAlign: 'center' }}>
+              <div style={{ background: 'rgba(0, 255, 136, 0.1)', color: '#00ff88', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22v-9"/><path d="M12 13a4 4 0 0 0-4-4h0a4 4 0 0 1-4-4"/><path d="M12 13a4 4 0 0 1 4-4h0a4 4 0 0 0 4-4"/></svg>
+              </div>
+              <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Environmental Conservation</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                Running massive tree-planting campaigns at every host venue to actively combat deforestation in Northern Uganda.
+              </p>
+            </div>
+
+            <div className="glass" style={{ padding: '2rem', borderRadius: '1rem', textAlign: 'center' }}>
+              <div style={{ background: 'rgba(212, 175, 55, 0.1)', color: '#d4af37', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+              </div>
+              <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Education Support</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                Awarding academic school bursaries to outstanding but underprivileged youth players to ensure they stay in school.
+              </p>
+            </div>
+
+            <div className="glass" style={{ padding: '2rem', borderRadius: '1rem', textAlign: 'center' }}>
+              <div style={{ background: 'rgba(56, 189, 248, 0.1)', color: '#38bdf8', width: '64px', height: '64px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <h3 style={{ marginBottom: '1rem', color: 'var(--text-primary)' }}>Corporate Partnerships</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem', lineHeight: '1.6' }}>
+                Local businesses, such as Oyoma General Stores, partner with the tournament to inject direct financial funding into local youth squads.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── LATEST NEWS ────────────────────────────── */}
       <section className="section">
         <div className="container">
