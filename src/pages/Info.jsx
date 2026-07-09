@@ -27,6 +27,14 @@ const Info = () => {
                   <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: 'var(--text-primary)' }}>Participants:</strong> Teams representing 21 constituencies across the Lango region take part in the tournament.</li>
                   <li><strong style={{ color: 'var(--text-primary)' }}>Defending Champions:</strong> Kyoga Constituency, who claimed the 1st edition title by defeating Lira City West 3-0 in the final.</li>
                 </ul>
+
+                <h3 style={{ marginTop: '2rem', marginBottom: '1rem', color: 'var(--accent-primary)' }}>"Football with a Purpose" (Socio-Economic Impact)</h3>
+                <p>The Dwog Pacu Foundation ensures the tournament achieves goals far beyond just sports:</p>
+                <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', color: 'var(--text-secondary)' }}>
+                  <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: 'var(--text-primary)' }}>Environmental Conservation:</strong> The tournament runs massive tree-planting campaigns at every host venue to combat deforestation in Northern Uganda.</li>
+                  <li style={{ marginBottom: '0.5rem' }}><strong style={{ color: 'var(--text-primary)' }}>Education Support:</strong> The foundation awards academic school bursaries to outstanding but underprivileged youth players to ensure they stay in school.</li>
+                  <li><strong style={{ color: 'var(--text-primary)' }}>Corporate Partnerships:</strong> Local businesses, such as Oyoma General Stores, partner with the tournament to inject direct financial funding into local youth squads.</li>
+                </ul>
               </div>
             </section>
 
