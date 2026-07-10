@@ -59,6 +59,22 @@ export default function Prizes() {
           </p>
         </div>
 
+        {/* Bonus pills */}
+        <div className="prize-bonus-strip">
+          <div className="prize-bonus-pill">
+            <span className="prize-bonus-label">🏆 Win</span>
+            <span className="prize-bonus-amount">UGX {WIN_PRIZE.toLocaleString()}</span>
+          </div>
+          <div className="prize-bonus-pill prize-bonus-pill--draw">
+            <span className="prize-bonus-label">🤝 Draw</span>
+            <span className="prize-bonus-amount">UGX {DRAW_PRIZE.toLocaleString()}</span>
+          </div>
+          <div className="prize-bonus-pill prize-bonus-pill--qf">
+            <span className="prize-bonus-label">⚡ QF Bonus</span>
+            <span className="prize-bonus-amount">UGX {QF_BONUS.toLocaleString()}</span>
+          </div>
+        </div>
+
         <div className="prize-table-card glass">
           <div className="prize-table-header">
             <h3><Coins size={20} /> Total Earnings</h3>

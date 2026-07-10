@@ -2,6 +2,57 @@
   padding-bottom: 3rem;
 }
 
+/* Bonus strip */
+.prize-bonus-strip {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 0 auto 1.5rem;
+  max-width: 800px;
+}
+
+.prize-bonus-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  flex: 1;
+  min-width: 140px;
+  padding: 1rem 1.25rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid var(--accent-primary);
+}
+
+.prize-bonus-pill--draw {
+  border-top-color: var(--accent-secondary);
+}
+
+.prize-bonus-pill--qf {
+  border-top-color: #d4af37;
+  background: rgba(212, 175, 55, 0.05);
+}
+
+.prize-bonus-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary);
+}
+
+.prize-bonus-amount {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-heading);
+}
+
+.prize-bonus-pill--qf .prize-bonus-amount {
+  color: #d4af37;
+}
+
 .prize-table-card {
   margin: 0 auto;
   max-width: 800px;
