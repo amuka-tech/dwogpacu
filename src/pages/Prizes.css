@@ -153,3 +153,26 @@
   z-index: 10;
   box-shadow: 0 1px 0 var(--border-color);
 }
+
+/* QF Qualification highlight */
+.qf-qualified-row {
+  background: rgba(212, 175, 55, 0.06);
+  border-left: 3px solid #d4af37;
+}
+
+.qf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  color: #d4af37;
+  background: rgba(212, 175, 55, 0.15);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  padding: 0.15rem 0.45rem;
+  border-radius: 20px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
