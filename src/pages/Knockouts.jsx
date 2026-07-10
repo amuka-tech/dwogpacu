@@ -8,8 +8,8 @@ function MatchupBox({ fixture, result, title }) {
   const home = TEAMS[fixture.homeTeamId];
   const away = TEAMS[fixture.awayTeamId];
   
-  const homeLabel = home ? home.shortName : (fixture.homeTeamId || 'TBD');
-  const awayLabel = away ? away.shortName : (fixture.awayTeamId || 'TBD');
+  const homeLabel = home ? home.name : (fixture.homeTeamId || 'TBD');
+  const awayLabel = away ? away.name : (fixture.awayTeamId || 'TBD');
 
   return (
     <div className="matchup glass">

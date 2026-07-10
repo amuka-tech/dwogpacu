@@ -291,38 +291,12 @@ export function TournamentProvider({ children }) {
       const totalMatches = groupStandings.length - 1;
       
       if (index === 0) {
-        // To be locked in 1st, Team 0 must be unreachable by ANY team below them
-        for (let i = 1; i < groupStandings.length; i++) {
-          const opp = groupStandings[i];
-          const oppRemaining = totalMatches - opp.p;
-          const oppMaxPts = opp.pts + (oppRemaining * 3);
-          if (oppRemaining > 0 && oppMaxPts >= team.pts) return defaultId;
-        }
+        // Just return the current 1st place team for a projected bracket
         return team.id;
       }
       
       if (index === 1) {
-        // To be locked in 2nd, Team 0 must be locked in 1st
-        let team0Locked = true;
-        const team0 = groupStandings[0];
-        for (let i = 1; i < groupStandings.length; i++) {
-          const opp = groupStandings[i];
-          const oppRemaining = totalMatches - opp.p;
-          const oppMaxPts = opp.pts + (oppRemaining * 3);
-          if (oppRemaining > 0 && oppMaxPts >= team0.pts) {
-            team0Locked = false;
-            break;
-          }
-        }
-        if (!team0Locked) return defaultId;
-        
-        // And Team 1 must be unreachable by ANY team below them (teams 2, 3, etc)
-        for (let i = 2; i < groupStandings.length; i++) {
-          const opp = groupStandings[i];
-          const oppRemaining = totalMatches - opp.p;
-          const oppMaxPts = opp.pts + (oppRemaining * 3);
-          if (oppRemaining > 0 && oppMaxPts >= team.pts) return defaultId;
-        }
+        // Just return the current 2nd place team for a projected bracket
         return team.id;
       }
       
