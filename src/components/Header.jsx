@@ -24,13 +24,13 @@ const Header = () => {
     { name: 'Teams', path: '/groups' },
     { name: 'Fixtures & Results', path: '/fixtures' },
     { name: 'Standings', path: '/standings' },
-    { name: 'Prize Money', path: '/prizes' },
     { name: 'Knockouts', path: '/knockouts' },
     { 
       name: 'Stats', 
       path: '/stats',
       subLinks: [
-        { name: '🎯 Predictions', path: '/predictions' }
+        { name: '🎯 Predictions', path: '/predictions' },
+        { name: '💰 Prize Money', path: '/prizes' }
       ]
     },
     { name: 'Info', path: '/info' },
