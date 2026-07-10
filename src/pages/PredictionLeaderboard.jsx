@@ -71,18 +71,19 @@ export default function PredictionLeaderboard() {
 
   const upcomingMatches = useMemo(() => {
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    const todayStr = `${yyyy}-${mm}-${dd}`;
 
     return fixtures.filter(f => {
       if (f.homeScore !== null) return false;
       if (!f.homeTeamId || !f.awayTeamId || f.homeTeamId === 'TBD' || f.homeTeamId.includes('WINNER')) return false;
       
-      if (f.isoDate) {
-        const matchDate = new Date(f.isoDate);
-        if (matchDate < today) return false;
-      }
+      if (f.isoDate !== todayStr) return false;
+
       return true;
-    }).slice(0, 5);
+    }).slice(0, 10);
   }, [fixtures]);
 
   return (
