@@ -167,8 +167,10 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
   const squadPlayers = selectedEventTeam && SQUADS[selectedEventTeam.name] ? SQUADS[selectedEventTeam.name].players : [];
   const datalistId = `squad-list-${fixture.id}`;
 
+  const status = result?.isLive ? 'live' : (result?.homeScore !== null && result?.homeScore !== undefined) ? 'done' : 'upcoming';
+
   return (
-    <div className="se-row glass">
+    <div className={`se-row glass se-row--${status}`}>
       <div className="se-match-info">
         <span className="se-num">
           #{fixture.matchNo}
@@ -531,19 +533,24 @@ export default function Admin() {
             <span style={{ textAlign: 'center' }}>Teams & Score</span>
             <span style={{ textAlign: 'right' }}>Actions</span>
           </div>
-          {filtered.map(f => (
-            <MatchScoreEntry
-              key={f.id}
-              fixture={f}
-              result={results[f.id] || null}
-              onSave={handleSave}
-              onSetLive={handleSetLive}
-              onAddEvent={handleAddEvent}
-              onRemoveEvent={handleRemoveEvent}
-              onUpdateLineups={handleUpdateLineups}
-              onReset={handleResetMatch}
-            />
-          ))}
+          {filtered.map(f => {
+            const r = results[f.id] || null;
+            const isDone = r && r.homeScore !== null && !r.isLive;
+            const isLive = r?.isLive;
+            return (
+              <MatchScoreEntry
+                key={f.id}
+                fixture={f}
+                result={r}
+                onSave={handleSave}
+                onSetLive={handleSetLive}
+                onAddEvent={handleAddEvent}
+                onRemoveEvent={handleRemoveEvent}
+                onUpdateLineups={handleUpdateLineups}
+                onReset={handleResetMatch}
+              />
+            );
+          })}
         </div>
 
       </div>
