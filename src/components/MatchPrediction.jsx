@@ -11,6 +11,8 @@ export default function MatchPrediction({ fixture, result }) {
   const [myPrediction, setMyPrediction] = useState(null);
   const [homePred, setHomePred] = useState(0);
   const [awayPred, setAwayPred] = useState(0);
+  const [predMode, setPredMode] = useState('exact'); // 'exact' or 'result'
+  const [resultPred, setResultPred] = useState(null); // 'home', 'draw', 'away'
   const [nickname, setNickname] = useState(() => localStorage.getItem('dwogpacu_nickname') || '');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
@@ -50,10 +52,25 @@ export default function MatchPrediction({ fixture, result }) {
     const nick = nickname.trim() || 'Fan';
     localStorage.setItem('dwogpacu_nickname', nick);
 
+    if (predMode === 'result' && !resultPred) {
+      toast.error('Please select a result!');
+      setSubmitting(false);
+      return;
+    }
+
+    let finalHome = homePred;
+    let finalAway = awayPred;
+
+    if (predMode === 'result') {
+      if (resultPred === 'home') { finalHome = 99; finalAway = 0; }
+      else if (resultPred === 'draw') { finalHome = 99; finalAway = 99; }
+      else if (resultPred === 'away') { finalHome = 0; finalAway = 99; }
+    }
+
     const { data, error } = await supabase.from('predictions').insert({
       match_id: fixture.id,
-      home_score_pred: homePred,
-      away_score_pred: awayPred,
+      home_score_pred: finalHome,
+      away_score_pred: finalAway,
       browser_id: bid,
       nickname: nick,
     }).select().single();
@@ -79,10 +96,18 @@ export default function MatchPrediction({ fixture, result }) {
   const draws = allPredictions.filter(p => p.home_score_pred === p.away_score_pred).length;
   const awayWins = allPredictions.filter(p => p.home_score_pred < p.away_score_pred).length;
 
+  // Format prediction for display
+  const formatPrediction = (hp, ap) => {
+    if (hp === 99 && ap === 0) return `${home?.shortName} Win`;
+    if (hp === 99 && ap === 99) return `Draw`;
+    if (hp === 0 && ap === 99) return `${away?.shortName} Win`;
+    return `${hp} - ${ap}`;
+  };
+
   // Find most popular prediction
   const freq = {};
   allPredictions.forEach(p => {
-    const k = `${p.home_score_pred}-${p.away_score_pred}`;
+    const k = formatPrediction(p.home_score_pred, p.away_score_pred);
     freq[k] = (freq[k] || 0) + 1;
   });
   const popular = Object.entries(freq).sort((a, b) => b[1] - a[1])[0];
@@ -102,25 +127,70 @@ export default function MatchPrediction({ fixture, result }) {
       {/* Input form — only for upcoming matches before prediction made */}
       {isUpcoming && !myPrediction && (
         <form onSubmit={handleSubmit} className="pred-form">
-          <div className="pred-score-input">
-            <div className="pred-team-input">
-              <span className="pred-team-name" style={{ color: home?.color }}>{home?.shortName || fixture.homeTeamId}</span>
-              <div className="pred-num-wrap">
-                <button type="button" className="pred-num-btn" onClick={() => setHomePred(v => Math.max(0, v - 1))}>−</button>
-                <span className="pred-num">{homePred}</span>
-                <button type="button" className="pred-num-btn" onClick={() => setHomePred(v => v + 1)}>+</button>
-              </div>
-            </div>
-            <span className="pred-vs">VS</span>
-            <div className="pred-team-input">
-              <div className="pred-num-wrap">
-                <button type="button" className="pred-num-btn" onClick={() => setAwayPred(v => Math.max(0, v - 1))}>−</button>
-                <span className="pred-num">{awayPred}</span>
-                <button type="button" className="pred-num-btn" onClick={() => setAwayPred(v => v + 1)}>+</button>
-              </div>
-              <span className="pred-team-name" style={{ color: away?.color }}>{away?.shortName || fixture.awayTeamId}</span>
-            </div>
+          <div className="pred-mode-toggle">
+            <button 
+              type="button" 
+              className={`pred-mode-btn ${predMode === 'exact' ? 'active' : ''}`}
+              onClick={() => setPredMode('exact')}
+            >
+              Exact Score
+            </button>
+            <button 
+              type="button" 
+              className={`pred-mode-btn ${predMode === 'result' ? 'active' : ''}`}
+              onClick={() => setPredMode('result')}
+            >
+              Match Result
+            </button>
           </div>
+
+          {predMode === 'exact' ? (
+            <div className="pred-score-input">
+              <div className="pred-team-input">
+                <span className="pred-team-name" style={{ color: home?.color }}>{home?.shortName || fixture.homeTeamId}</span>
+                <div className="pred-num-wrap">
+                  <button type="button" className="pred-num-btn" onClick={() => setHomePred(v => Math.max(0, v - 1))}>−</button>
+                  <span className="pred-num">{homePred}</span>
+                  <button type="button" className="pred-num-btn" onClick={() => setHomePred(v => v + 1)}>+</button>
+                </div>
+              </div>
+              <span className="pred-vs">VS</span>
+              <div className="pred-team-input">
+                <div className="pred-num-wrap">
+                  <button type="button" className="pred-num-btn" onClick={() => setAwayPred(v => Math.max(0, v - 1))}>−</button>
+                  <span className="pred-num">{awayPred}</span>
+                  <button type="button" className="pred-num-btn" onClick={() => setAwayPred(v => v + 1)}>+</button>
+                </div>
+                <span className="pred-team-name" style={{ color: away?.color }}>{away?.shortName || fixture.awayTeamId}</span>
+              </div>
+            </div>
+          ) : (
+            <div className="pred-result-input">
+              <button 
+                type="button" 
+                className={`pred-result-btn ${resultPred === 'home' ? 'active' : ''}`}
+                onClick={() => setResultPred('home')}
+                style={resultPred === 'home' ? { '--team-color': home?.color } : {}}
+              >
+                {home?.shortName} Win
+              </button>
+              <button 
+                type="button" 
+                className={`pred-result-btn draw ${resultPred === 'draw' ? 'active' : ''}`}
+                onClick={() => setResultPred('draw')}
+              >
+                Draw
+              </button>
+              <button 
+                type="button" 
+                className={`pred-result-btn ${resultPred === 'away' ? 'active' : ''}`}
+                onClick={() => setResultPred('away')}
+                style={resultPred === 'away' ? { '--team-color': away?.color } : {}}
+              >
+                {away?.shortName} Win
+              </button>
+            </div>
+          )}
 
           <div className="pred-nick-row">
             <input
@@ -142,7 +212,7 @@ export default function MatchPrediction({ fixture, result }) {
         <div className="pred-mine">
           <span className="pred-mine-label">Your prediction:</span>
           <span className="pred-mine-score">
-            {myPrediction.home_score_pred} – {myPrediction.away_score_pred}
+            {formatPrediction(myPrediction.home_score_pred, myPrediction.away_score_pred)}
           </span>
           {isCompleted && (
             myPrediction.exact_score

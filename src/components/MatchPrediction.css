@@ -245,3 +245,77 @@
   .pred-nick-row { flex-direction: column; }
   .pred-nick-input, .pred-submit-btn { width: 100%; }
 }
+
+/* Prediction Mode Toggle */
+.pred-mode-toggle {
+  display: flex;
+  background: rgba(0,0,0,0.4);
+  padding: 0.25rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.pred-mode-btn {
+  flex: 1;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pred-mode-btn.active {
+  background: var(--accent-primary);
+  color: #fff;
+}
+
+/* Match Result Mode Input */
+.pred-result-input {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.pred-result-btn {
+  flex: 1;
+  padding: 1rem 0.5rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.pred-result-btn:hover {
+  background: rgba(255,255,255,0.08);
+}
+
+.pred-result-btn.active {
+  background: rgba(var(--team-color, 227,49,23), 0.15);
+  border-color: var(--team-color, var(--accent-primary));
+  color: var(--team-color, #fff);
+}
+
+.pred-result-btn.draw.active {
+  background: rgba(255,255,255,0.1);
+  border-color: var(--text-secondary);
+  color: var(--text-primary);
+}
+
+@media (max-width: 480px) {
+  .pred-result-input {
+    flex-direction: column;
+  }
+}
