@@ -229,8 +229,19 @@
 .pred-popular strong { color: var(--text-primary); }
 
 @media (max-width: 480px) {
-  .pred-section { padding: 1.25rem 1rem; }
-  .pred-score-input { gap: 0.75rem; padding: 1rem; }
+  .pred-section { padding: 1.25rem 0.75rem; }
+  .pred-score-input { gap: 0.5rem; padding: 0.75rem; }
+  .pred-team-name { font-size: 0.9rem; }
+  .pred-num-wrap { gap: 0.4rem; }
+  .pred-num-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 1.1rem;
+  }
+  .pred-num {
+    font-size: 1.8rem;
+    min-width: 36px;
+  }
   .pred-nick-row { flex-direction: column; }
   .pred-nick-input, .pred-submit-btn { width: 100%; }
 }
