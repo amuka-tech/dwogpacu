@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../utils/supabase';
 import { FIXTURES } from '../data/fixtures';
 import { getBrowserId } from '../utils/browserId';
-import { Trophy, Target, Medal, Star } from 'lucide-react';
+import { Trophy, Target, Medal } from 'lucide-react';
 import './PredictionLeaderboard.css';
 
 export default function PredictionLeaderboard() {
@@ -32,14 +32,20 @@ export default function PredictionLeaderboard() {
           browser_id: p.browser_id,
           nickname: p.nickname || 'Fan',
           total: 0,
-          correct: 0,
-          exact: 0,
-          pts: 0,
+          correct: 0,   // right result (W/D/L)
+          exact: 0,     // exact score
+          pts: 0,       // 2pts for correct result, 5pts for exact score
         };
       }
       const f = fans[p.browser_id];
       f.total++;
 
+      // Find the actual result
+      const fixture = FIXTURES.find(fx => fx.id === p.match_id);
+      if (!fixture) return;
+
+      // We need the result — we'll compute from predictions' is_correct/exact_score
+      // These get updated by the admin or can be computed client-side
       if (p.exact_score) {
         f.exact++;
         f.correct++;
@@ -59,155 +65,102 @@ export default function PredictionLeaderboard() {
   const totalPredictions = predictions.length;
   const matchesPredicted = new Set(predictions.map(p => p.match_id)).size;
 
-  const topThree = leaderboard.slice(0, 3);
-  const remaining = leaderboard.slice(3);
-
   return (
     <div className="pred-lb-page animate-fade-in">
       <div className="container">
-        
-        {/* HERO SECTION */}
-        <div className="pred-hero">
-          <div className="pred-hero-content">
-            <span className="badge badge-group">Fan Arena</span>
-            <h1 className="pred-title">Prediction <span className="text-gradient">Leaderboard</span></h1>
-            <p className="pred-subtitle">
-              Compete against other fans. <strong>{totalPredictions}</strong> predictions made across <strong>{matchesPredicted}</strong> matches.
-            </p>
+        <div className="page-header">
+          <span className="badge badge-group">Fan Arena</span>
+          <h1 className="section-heading">Prediction Leaderboard</h1>
+          <p className="section-subheading">
+            Who knows their football? {totalPredictions} predictions across {matchesPredicted} matches.
+            Score 2pts for the correct result, 5pts for the exact score!
+          </p>
+        </div>
+
+        {/* Scoring system */}
+        <div className="pred-scoring-guide glass">
+          <div className="pred-score-item">
+            <span className="pred-score-icon exact-icon">🎯</span>
+            <div>
+              <div className="pred-score-name">Exact Score</div>
+              <div className="pred-score-desc">Predict the exact scoreline</div>
+            </div>
+            <span className="pred-score-pts">+5 pts</span>
           </div>
-          
-          <div className="pred-scoring-guide glass">
-            <div className="pred-score-item">
-              <div className="pred-score-icon-wrap exact-wrap"><Target size={20} /></div>
-              <div className="pred-score-text">
-                <span className="pred-score-name">Exact Score</span>
-                <span className="pred-score-pts">+5 pts</span>
-              </div>
+          <div className="pred-score-item">
+            <span className="pred-score-icon correct-icon">✅</span>
+            <div>
+              <div className="pred-score-name">Correct Result</div>
+              <div className="pred-score-desc">Win/Draw/Loss outcome right</div>
             </div>
-            <div className="pred-score-divider"></div>
-            <div className="pred-score-item">
-              <div className="pred-score-icon-wrap correct-wrap"><CheckCircleIcon /></div>
-              <div className="pred-score-text">
-                <span className="pred-score-name">Correct Result</span>
-                <span className="pred-score-pts">+2 pts</span>
-              </div>
-            </div>
+            <span className="pred-score-pts">+2 pts</span>
           </div>
         </div>
 
-        {/* MY RANKING BANNER */}
+        {/* My standing */}
         {myRank && (
           <div className="pred-my-rank glass">
-            <div className="pred-my-rank-left">
-              <div className="pred-my-avatar">
-                {myRank.nickname.charAt(0).toUpperCase()}
-              </div>
-              <div className="pred-my-info">
-                <div className="pred-my-label">Your Ranking</div>
-                <div className="pred-my-name">{myRank.nickname}</div>
-              </div>
+            <Target size={18} className="pred-my-icon" />
+            <div>
+              <div className="pred-my-label">Your ranking</div>
+              <div className="pred-my-name">{myRank.nickname}</div>
             </div>
             <div className="pred-my-stats">
-              <div className="pred-stat-box">
-                <span className="pred-stat-val">#{myRank.rank}</span>
-                <span className="pred-stat-lbl">Rank</span>
-              </div>
-              <div className="pred-stat-box highlight">
-                <span className="pred-stat-val">{myRank.pts}</span>
-                <span className="pred-stat-lbl">Points</span>
-              </div>
-              <div className="pred-stat-box">
-                <span className="pred-stat-val">{myRank.exact}</span>
-                <span className="pred-stat-lbl">Exact</span>
-              </div>
+              <span>#{myRank.rank}</span>
+              <span className="pred-my-sep">·</span>
+              <span>{myRank.pts} pts</span>
+              <span className="pred-my-sep">·</span>
+              <span>{myRank.exact} exact</span>
             </div>
           </div>
         )}
 
-        {/* LEADERBOARD SECTION */}
-        <div className="pred-board-container">
+        {/* Leaderboard table */}
+        <div className="pred-lb-card glass">
           {loading ? (
-            <div className="pred-loading glass">Loading rankings...</div>
+            <div className="pred-lb-loading">Loading predictions...</div>
           ) : leaderboard.length === 0 ? (
-            <div className="pred-empty glass">
+            <div className="pred-lb-empty">
               <Target size={48} style={{ opacity: 0.2, marginBottom: '1rem' }} />
               <p>No predictions yet. Be the first to predict a match!</p>
             </div>
           ) : (
-            <>
-              {/* TOP 3 PODIUM */}
-              {topThree.length > 0 && (
-                <div className="pred-podium">
-                  {/* Rank 2 */}
-                  {topThree[1] && (
-                    <div className="podium-card silver">
-                      <div className="podium-rank"><Medal size={20}/> 2</div>
-                      <div className="podium-name">{topThree[1].nickname} {topThree[1].browser_id === myBid && <span className="you-tag">You</span>}</div>
-                      <div className="podium-pts">{topThree[1].pts} pts</div>
-                      <div className="podium-exact">{topThree[1].exact} exact</div>
-                    </div>
-                  )}
-                  {/* Rank 1 */}
-                  {topThree[0] && (
-                    <div className="podium-card gold">
-                      <div className="podium-crown"><Trophy size={28}/></div>
-                      <div className="podium-rank">1</div>
-                      <div className="podium-name">{topThree[0].nickname} {topThree[0].browser_id === myBid && <span className="you-tag">You</span>}</div>
-                      <div className="podium-pts">{topThree[0].pts} pts</div>
-                      <div className="podium-exact">{topThree[0].exact} exact</div>
-                    </div>
-                  )}
-                  {/* Rank 3 */}
-                  {topThree[2] && (
-                    <div className="podium-card bronze">
-                      <div className="podium-rank"><Medal size={20}/> 3</div>
-                      <div className="podium-name">{topThree[2].nickname} {topThree[2].browser_id === myBid && <span className="you-tag">You</span>}</div>
-                      <div className="podium-pts">{topThree[2].pts} pts</div>
-                      <div className="podium-exact">{topThree[2].exact} exact</div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* REMAINING LIST */}
-              {remaining.length > 0 && (
-                <div className="pred-list glass">
-                  <div className="pred-list-header">
-                    <span className="pl-rank">#</span>
-                    <span className="pl-fan">Fan</span>
-                    <span className="pl-stat">Predicted</span>
-                    <span className="pl-stat">Exact</span>
-                    <span className="pl-pts">Points</span>
-                  </div>
-                  {remaining.map((fan) => {
-                    const isMe = fan.browser_id === myBid;
-                    return (
-                      <div key={fan.browser_id} className={`pred-list-row ${isMe ? 'is-me' : ''}`}>
-                        <span className="pl-rank">{fan.rank}</span>
-                        <span className="pl-fan">
-                          {fan.nickname} {isMe && <span className="you-tag">You</span>}
-                        </span>
-                        <span className="pl-stat">{fan.total}</span>
-                        <span className="pl-stat">{fan.exact}</span>
-                        <span className="pl-pts">{fan.pts}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </>
+            <table className="pred-lb-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Fan</th>
+                  <th>Predicted</th>
+                  <th>Exact</th>
+                  <th>Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                {leaderboard.map((fan) => {
+                  const isMe = fan.browser_id === myBid;
+                  return (
+                    <tr key={fan.browser_id} className={isMe ? 'pred-lb-me' : ''}>
+                      <td className="pred-lb-rank">
+                        {fan.rank === 1 ? <Trophy size={18} className="rank-gold" /> :
+                         fan.rank === 2 ? <Medal size={18} className="rank-silver" /> :
+                         fan.rank === 3 ? <Medal size={18} className="rank-bronze" /> :
+                         fan.rank}
+                      </td>
+                      <td className="pred-lb-nick">
+                        {fan.nickname}
+                        {isMe && <span className="pred-lb-you">you</span>}
+                      </td>
+                      <td>{fan.total}</td>
+                      <td>{fan.exact}</td>
+                      <td className="pred-lb-pts">{fan.pts}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           )}
         </div>
       </div>
     </div>
-  );
-}
-
-function CheckCircleIcon() {
-  return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-      <polyline points="22 4 12 14.01 9 11.01"></polyline>
-    </svg>
   );
 }
