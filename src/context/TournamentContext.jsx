@@ -145,6 +145,28 @@ export function TournamentProvider({ children }) {
         console.log("Edge function success:", invokeData);
       }
 
+      // Automatically grade any predictions for this match if it has scores
+      if (homeScore !== null && awayScore !== null) {
+        const { data: preds } = await supabase.from('predictions').select('id, home_score_pred, away_score_pred').eq('match_id', matchId);
+        if (preds && preds.length > 0) {
+          for (const p of preds) {
+            const isExact = (p.home_score_pred === homeScore && p.away_score_pred === awayScore);
+            const predDiff = p.home_score_pred - p.away_score_pred;
+            const actualDiff = homeScore - awayScore;
+            
+            let isCorrect = false;
+            if (predDiff > 0 && actualDiff > 0) isCorrect = true;
+            else if (predDiff < 0 && actualDiff < 0) isCorrect = true;
+            else if (predDiff === 0 && actualDiff === 0) isCorrect = true;
+            
+            await supabase.from('predictions').update({
+              is_correct: isCorrect,
+              exact_score: isExact
+            }).eq('id', p.id);
+          }
+        }
+      }
+
     } catch(err) {
       console.error("Failed to update result", err);
     }

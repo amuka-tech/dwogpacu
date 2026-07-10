@@ -16,13 +16,13 @@ export default function UpdatePrompt() {
     },
   });
 
+  const [isReloading, setIsReloading] = React.useState(false);
+
   const close = () => {
     setNeedRefresh(false);
   };
 
   if (!needRefresh) return null;
-
-  const [isReloading, setIsReloading] = React.useState(false);
 
   const handleUpdate = () => {
     setIsReloading(true);
