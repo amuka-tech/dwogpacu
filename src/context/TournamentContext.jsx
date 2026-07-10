@@ -292,12 +292,12 @@ export function TournamentProvider({ children }) {
       
       if (index === 0) {
         // Just return the current 1st place team for a projected bracket
-        return team.id;
+        return team.team.id;
       }
       
       if (index === 1) {
         // Just return the current 2nd place team for a projected bracket
-        return team.id;
+        return team.team.id;
       }
       
       return defaultId;
