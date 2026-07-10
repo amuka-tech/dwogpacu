@@ -73,8 +73,8 @@ export default function Prizes() {
                 <tr>
                   <th className="rank-td">#</th>
                   <th>Team</th>
-                  <th className="hide-mobile">Wins (200k)</th>
-                  <th className="hide-mobile">Draws (100k)</th>
+                  <th className="hide-mobile">Wins</th>
+                  <th className="hide-mobile">Draws</th>
                   <th style={{ textAlign: 'right' }}>Total Earnings</th>
                 </tr>
               </thead>
