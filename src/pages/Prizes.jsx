@@ -73,8 +73,8 @@ export default function Prizes() {
                 <tr>
                   <th className="rank-td">#</th>
                   <th>Team</th>
-                  <th className="hide-mobile">Group Stage</th>
-                  <th className="hide-mobile">QF Bonus</th>
+                  <th className="hide-mobile">Wins (200k)</th>
+                  <th className="hide-mobile">Draws (100k)</th>
                   <th style={{ textAlign: 'right' }}>Total Earnings</th>
                 </tr>
               </thead>
@@ -99,13 +99,8 @@ export default function Prizes() {
                         )}
                       </Link>
                     </td>
-                    <td className="hide-mobile">UGX {row.groupPrize.toLocaleString()}</td>
-                    <td className="hide-mobile">
-                      {row.qfBonus > 0
-                        ? <span style={{ color: '#d4af37', fontWeight: 700 }}>+UGX {row.qfBonus.toLocaleString()}</span>
-                        : <span style={{ color: 'var(--text-muted)' }}>—</span>
-                      }
-                    </td>
+                    <td className="hide-mobile">{row.w}</td>
+                    <td className="hide-mobile">{row.d}</td>
                     <td className="money-td">
                       UGX {row.prizeMoney.toLocaleString()}
                     </td>
