@@ -55,8 +55,14 @@ const Header = () => {
                   to={link.path} 
                   className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
                   onClick={() => setIsMenuOpen(false)}
+                  style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}
                 >
                   {link.name}
+                  {link.subLinks && (
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ marginTop: '2px' }}>
+                      <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                  )}
                 </Link>
                 {link.subLinks && (
                   <div className="nav-dropdown">
