@@ -70,7 +70,19 @@ export default function PredictionLeaderboard() {
   const matchesPredicted = new Set(predictions.map(p => p.match_id)).size;
 
   const upcomingMatches = useMemo(() => {
-    return fixtures.filter(f => f.homeScore === null && f.homeTeamId && f.awayTeamId && f.homeTeamId !== 'TBD' && f.awayTeamId !== 'TBD').slice(0, 5); // Show next 5
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    return fixtures.filter(f => {
+      if (f.homeScore !== null) return false;
+      if (!f.homeTeamId || !f.awayTeamId || f.homeTeamId === 'TBD' || f.homeTeamId.includes('WINNER')) return false;
+      
+      if (f.isoDate) {
+        const matchDate = new Date(f.isoDate);
+        if (matchDate < today) return false;
+      }
+      return true;
+    }).slice(0, 5);
   }, [fixtures]);
 
   return (
