@@ -12,7 +12,7 @@ export default function PredictionLeaderboard() {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
   const myBid = getBrowserId();
-  const { fixtures } = useTournament();
+  const { fixtures, results } = useTournament();
 
   useEffect(() => {
     async function load() {
@@ -36,20 +36,17 @@ export default function PredictionLeaderboard() {
           browser_id: p.browser_id,
           nickname: p.nickname || 'Fan',
           total: 0,
-          correct: 0,   // right result (W/D/L)
-          exact: 0,     // exact score
-          pts: 0,       // 2pts for correct result, 5pts for exact score
+          correct: 0,
+          exact: 0,
+          pts: 0,
         };
       }
       const f = fans[p.browser_id];
       f.total++;
 
-      // Find the actual result
       const fixture = FIXTURES.find(fx => fx.id === p.match_id);
       if (!fixture) return;
 
-      // We need the result — we'll compute from predictions' is_correct/exact_score
-      // These get updated by the admin or can be computed client-side
       if (p.exact_score) {
         f.exact++;
         f.correct++;
@@ -77,14 +74,19 @@ export default function PredictionLeaderboard() {
     const todayStr = `${yyyy}-${mm}-${dd}`;
 
     return fixtures.filter(f => {
-      if (f.homeScore !== null) return false;
+      // Check if match already has a result or is live
+      const matchResult = results[f.id];
+      if (matchResult && (matchResult.homeScore !== null || matchResult.isLive)) return false;
+      
+      // Filter out placeholders
       if (!f.homeTeamId || !f.awayTeamId || f.homeTeamId === 'TBD' || f.homeTeamId.includes('WINNER')) return false;
       
+      // Strictly today's games
       if (f.isoDate !== todayStr) return false;
 
       return true;
     }).slice(0, 10);
-  }, [fixtures]);
+  }, [fixtures, results]);
 
   return (
     <div className="pred-lb-page animate-fade-in">
