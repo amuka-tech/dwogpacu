@@ -26,7 +26,13 @@ const Header = () => {
     { name: 'Standings', path: '/standings' },
     { name: 'Prize Money', path: '/prizes' },
     { name: 'Knockouts', path: '/knockouts' },
-    { name: 'Stats', path: '/stats' },
+    { 
+      name: 'Stats', 
+      path: '/stats',
+      subLinks: [
+        { name: '🎯 Predictions', path: '/predictions' }
+      ]
+    },
     { name: 'Info', path: '/info' },
   ];
 
@@ -44,7 +50,7 @@ const Header = () => {
         <nav className={`nav-menu ${isMenuOpen ? 'open' : ''}`}>
           <ul className="nav-list">
             {navLinks.map((link) => (
-              <li key={link.name} className="nav-item">
+              <li key={link.name} className={`nav-item ${link.subLinks ? 'has-dropdown' : ''}`}>
                 <Link 
                   to={link.path} 
                   className={`nav-link ${location.pathname === link.path ? 'active' : ''}`}
@@ -52,6 +58,20 @@ const Header = () => {
                 >
                   {link.name}
                 </Link>
+                {link.subLinks && (
+                  <div className="nav-dropdown">
+                    {link.subLinks.map(sub => (
+                      <Link 
+                        key={sub.name}
+                        to={sub.path}
+                        className={`dropdown-link ${location.pathname === sub.path ? 'active' : ''}`}
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {sub.name}
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </li>
             ))}
           </ul>
