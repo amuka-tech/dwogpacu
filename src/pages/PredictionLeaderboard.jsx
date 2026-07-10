@@ -2,13 +2,17 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { supabase } from '../utils/supabase';
 import { FIXTURES } from '../data/fixtures';
 import { getBrowserId } from '../utils/browserId';
-import { Trophy, Target, Medal } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Trophy, Target, Medal, Calendar, ChevronRight } from 'lucide-react';
+import { useTournament } from '../context/TournamentContext';
+import { TEAMS } from '../data/teams';
 import './PredictionLeaderboard.css';
 
 export default function PredictionLeaderboard() {
   const [predictions, setPredictions] = useState([]);
   const [loading, setLoading] = useState(true);
   const myBid = getBrowserId();
+  const { fixtures } = useTournament();
 
   useEffect(() => {
     async function load() {
@@ -65,6 +69,10 @@ export default function PredictionLeaderboard() {
   const totalPredictions = predictions.length;
   const matchesPredicted = new Set(predictions.map(p => p.match_id)).size;
 
+  const upcomingMatches = useMemo(() => {
+    return fixtures.filter(f => f.homeScore === null && f.homeTeamId && f.awayTeamId && f.homeTeamId !== 'TBD' && f.awayTeamId !== 'TBD').slice(0, 5); // Show next 5
+  }, [fixtures]);
+
   return (
     <div className="pred-lb-page animate-fade-in">
       <div className="container">
@@ -96,6 +104,31 @@ export default function PredictionLeaderboard() {
             <span className="pred-score-pts">+2 pts</span>
           </div>
         </div>
+
+        {/* Upcoming Matches for Prediction */}
+        {upcomingMatches.length > 0 && (
+          <div className="pred-upcoming-section">
+            <h2 className="pred-upcoming-title"><Calendar size={20} /> Upcoming Matches to Predict</h2>
+            <div className="pred-upcoming-list">
+              {upcomingMatches.map(match => {
+                const home = TEAMS[match.homeTeamId];
+                const away = TEAMS[match.awayTeamId];
+                return (
+                  <Link to={`/match/${match.id}`} key={match.id} className="pred-upcoming-card glass">
+                    <div className="pred-uc-teams">
+                      <span className="pred-uc-team home">{home?.shortName || match.homeTeamId}</span>
+                      <span className="pred-uc-vs">VS</span>
+                      <span className="pred-uc-team away">{away?.shortName || match.awayTeamId}</span>
+                    </div>
+                    <div className="pred-uc-action">
+                      Predict <ChevronRight size={16} />
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        )}
 
         {/* My standing */}
         {myRank && (
