@@ -121,11 +121,11 @@ export default function Prizes() {
           <ul>
             <li>
               <span>Group Stage Win</span>
-              <span className="rule-value">UGX 200,000</span>
+              <span className="rule-value">UGX {WIN_PRIZE.toLocaleString()}</span>
             </li>
             <li>
               <span>Group Stage Draw</span>
-              <span className="rule-value">UGX 100,000</span>
+              <span className="rule-value">UGX {DRAW_PRIZE.toLocaleString()}</span>
             </li>
             <li>
               <span>Group Stage Loss</span>
@@ -133,7 +133,7 @@ export default function Prizes() {
             </li>
             <li>
               <span>Quarter-Final Qualification Bonus</span>
-              <span className="rule-value" style={{ color: '#d4af37' }}>UGX 200,000</span>
+              <span className="rule-value" style={{ color: '#d4af37' }}>UGX {QF_BONUS.toLocaleString()}</span>
             </li>
           </ul>
         </div>
