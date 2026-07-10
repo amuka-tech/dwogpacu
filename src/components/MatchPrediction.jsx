@@ -17,7 +17,7 @@ export default function MatchPrediction({ fixture, result }) {
 
   const home = TEAMS[fixture?.homeTeamId];
   const away = TEAMS[fixture?.awayTeamId];
-  const isUpcoming = !result || result.homeScore === null;
+  const isUpcoming = (!result || result.homeScore === null) && !result?.isLive;
   const isCompleted = result && result.homeScore !== null && !result.isLive;
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function MatchPrediction({ fixture, result }) {
     setSubmitting(false);
   };
 
-  if (!fixture || result?.isLive) return null;
+  if (!fixture) return null;
   // Only show for group stage upcoming/completed
   if (fixture.stage !== 'group') return null;
 
