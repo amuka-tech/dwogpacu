@@ -35,7 +35,9 @@ export function TournamentProvider({ children }) {
           awayScore: match.away_score,
           isLive: match.is_live,
           events: match.events || [],
-          liveMinute: match.live_minute || "", 
+          liveMinute: match.live_minute || "",
+          leg1: match.leg1 || null,
+          leg2: match.leg2 || null,
         };
       });
       resultsRef.current = resultsMap;
@@ -169,6 +171,39 @@ export function TournamentProvider({ children }) {
 
     } catch(err) {
       console.error("Failed to update result", err);
+    }
+  };
+
+  const updateLegScore = async (matchId, leg, homeScore, awayScore) => {
+    try {
+      const currentData = results[matchId] || {};
+      const legKey = `leg${leg}`;
+      const newLegData = { home: homeScore, away: awayScore };
+      const updated = { ...currentData, [legKey]: newLegData };
+
+      // Compute aggregate for homeScore/awayScore fields
+      const l1 = leg === 1 ? newLegData : (currentData.leg1 || null);
+      const l2 = leg === 2 ? newLegData : (currentData.leg2 || null);
+      const aggHome = l1 && l2 ? l1.home + l2.away : null;
+      const aggAway = l1 && l2 ? l1.away + l2.home : null;
+
+      updated.homeScore = aggHome;
+      updated.awayScore = aggAway;
+
+      setResults(prev => ({ ...prev, [matchId]: updated }));
+
+      await supabase.from('matches').upsert({
+        id: matchId,
+        home_score: aggHome,
+        away_score: aggAway,
+        is_live: currentData.isLive || false,
+        live_minute: currentData.liveMinute || null,
+        events: currentData.events || [],
+        leg1: l1,
+        leg2: l2,
+      });
+    } catch (err) {
+      console.error('Failed to save leg score', err);
     }
   };
 
@@ -422,6 +457,7 @@ export function TournamentProvider({ children }) {
       addMatchEvent,
       removeMatchEvent,
       updateLineups,
+      updateLegScore,
       subscribeToPushNotifications
     }}>
       {children}

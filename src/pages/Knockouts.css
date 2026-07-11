@@ -107,4 +107,32 @@
   color: var(--text-primary);
 }
 
-/* Connector Lines can be added here with ::after / ::before pseudo elements if desired, but flex layout provides clear separation */
+/* Leg score breakdown */
+.leg-scores {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.leg-score-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.leg-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.leg-score-val {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--accent-secondary);
+}

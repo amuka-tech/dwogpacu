@@ -58,7 +58,7 @@ function LoginScreen({ onLogin }) {
 }
 
 // ── Match Score Entry ─────────────────────────────────────────
-function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRemoveEvent, onUpdateLineups, onReset }) {
+function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRemoveEvent, onUpdateLineups, onReset, onSaveLeg }) {
   const home = TEAMS[fixture.homeTeamId];
   const away = TEAMS[fixture.awayTeamId];
 
@@ -78,6 +78,15 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
   const [homeLineupText, setHomeLineupText] = useState((result?.homeLineup || []).join('\n'));
   const [awayLineupText, setAwayLineupText] = useState((result?.awayLineup || []).join('\n'));
 
+  // Leg scores (for knockout home-and-away)
+  const isKnockout = fixture.stage === 'knockout';
+  const [showLegs, setShowLegs] = useState(false);
+  const [leg1H, setLeg1H] = useState(result?.leg1?.home ?? '');
+  const [leg1A, setLeg1A] = useState(result?.leg1?.away ?? '');
+  const [leg2H, setLeg2H] = useState(result?.leg2?.home ?? '');
+  const [leg2A, setLeg2A] = useState(result?.leg2?.away ?? '');
+  const [legSaved, setLegSaved] = useState(false);
+
   // Sync state with backend props if they arrive late
   React.useEffect(() => {
     setHs(result?.homeScore ?? '');
@@ -87,6 +96,10 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
     setAwayFormation(result?.awayFormation || '4-2-3-1');
     setHomeLineupText((result?.homeLineup || []).join('\n'));
     setAwayLineupText((result?.awayLineup || []).join('\n'));
+    setLeg1H(result?.leg1?.home ?? '');
+    setLeg1A(result?.leg1?.away ?? '');
+    setLeg2H(result?.leg2?.home ?? '');
+    setLeg2A(result?.leg2?.away ?? '');
   }, [result]);
 
   const handleSave = () => {
@@ -160,6 +173,18 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
     toast.success('Lineups Successfully Saved!');
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleSaveLegScores = () => {
+    const h1 = leg1H === '' ? null : Number(leg1H);
+    const a1 = leg1A === '' ? null : Number(leg1A);
+    const h2 = leg2H === '' ? null : Number(leg2H);
+    const a2 = leg2A === '' ? null : Number(leg2A);
+    if (h1 !== null) onSaveLeg(fixture.id, 1, h1, a1 ?? 0);
+    if (h2 !== null) onSaveLeg(fixture.id, 2, h2, a2 ?? 0);
+    toast.success('Leg Scores Saved!');
+    setLegSaved(true);
+    setTimeout(() => setLegSaved(false), 2000);
   };
 
   const events = result?.events || [];
@@ -276,18 +301,27 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
           <div className="se-actions secondary">
             <button
               className="btn btn-secondary"
-              onClick={() => { setShowEvents(!showEvents); setShowLineups(false); }}
+              onClick={() => { setShowEvents(!showEvents); setShowLineups(false); setShowLegs(false); }}
               title="Match Events"
             >
               <Plus size={16} /> Events ({events.length})
             </button>
             <button
               className="btn btn-secondary"
-              onClick={() => { setShowLineups(!showLineups); setShowEvents(false); }}
+              onClick={() => { setShowLineups(!showLineups); setShowEvents(false); setShowLegs(false); }}
               title="Starting Lineups"
             >
               <Users size={16} /> Lineups
             </button>
+            {isKnockout && (
+              <button
+                className="btn btn-secondary"
+                onClick={() => { setShowLegs(!showLegs); setShowEvents(false); setShowLineups(false); }}
+                title="Leg Scores"
+              >
+                Leg Scores
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -378,6 +412,40 @@ function MatchScoreEntry({ fixture, result, onSave, onSetLive, onAddEvent, onRem
 
         </div>
       )}
+
+      {/* Leg Scores Panel */}
+      {showLegs && isKnockout && fixture.homeTeamId && (
+        <div className="se-lineups-panel">
+          <div className="se-lineup-col">
+            <label className="se-lineup-label">1st Leg Score</label>
+            <div className="se-controls" style={{justifyContent: 'flex-start', marginBottom: '1rem'}}>
+              <input type="number" min="0" value={leg1H} onChange={e => setLeg1H(e.target.value)} className="score-input" placeholder="Home" title={`${home?.name} 1st Leg Goals`} />
+              <span className="se-dash">–</span>
+              <input type="number" min="0" value={leg1A} onChange={e => setLeg1A(e.target.value)} className="score-input" placeholder="Away" title={`${away?.name} 1st Leg Goals`} />
+            </div>
+            
+            <label className="se-lineup-label">2nd Leg Score</label>
+            <div className="se-controls" style={{justifyContent: 'flex-start', marginBottom: '1rem'}}>
+              <input type="number" min="0" value={leg2H} onChange={e => setLeg2H(e.target.value)} className="score-input" placeholder="Home" title={`${home?.name} 2nd Leg Goals`} />
+              <span className="se-dash">–</span>
+              <input type="number" min="0" value={leg2A} onChange={e => setLeg2A(e.target.value)} className="score-input" placeholder="Away" title={`${away?.name} 2nd Leg Goals`} />
+            </div>
+          </div>
+          
+          <div className="se-lineup-col" style={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <div style={{background: 'rgba(255,255,255,0.05)', padding: '1rem', borderRadius: '8px', fontSize: '0.85rem', color: 'var(--text-muted)'}}>
+              <p style={{margin: '0 0 0.5rem 0'}}><AlertCircle size={14} style={{display: 'inline', verticalAlign: 'middle', marginRight: '4px'}}/> Aggregate score will be calculated automatically.</p>
+              <p style={{margin: 0}}>Leave fields empty if a leg hasn't been played yet.</p>
+            </div>
+          </div>
+
+          <div className="se-lineups-actions" style={{gridColumn: '1 / -1'}}>
+            <button className={`btn btn-save ${legSaved ? 'btn-saved' : ''}`} onClick={handleSaveLegScores}>
+              {legSaved ? <><CheckCircle size={16} /> Saved!</> : <><Save size={16} /> Save Leg Scores</>}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -395,7 +463,8 @@ export default function Admin() {
     removeMatchResult,
     addMatchEvent, 
     removeMatchEvent, 
-    updateLineups 
+    updateLineups,
+    updateLegScore
   } = useTournament();
 
   const [filterDay, setFilterDay] = useState('All');
@@ -521,6 +590,7 @@ export default function Admin() {
                 onRemoveEvent={handleRemoveEvent}
                 onUpdateLineups={handleUpdateLineups}
                 onReset={handleResetMatch}
+                onSaveLeg={updateLegScore}
               />
             ))}
           </div>
@@ -548,6 +618,7 @@ export default function Admin() {
                 onRemoveEvent={handleRemoveEvent}
                 onUpdateLineups={handleUpdateLineups}
                 onReset={handleResetMatch}
+                onSaveLeg={updateLegScore}
               />
             );
           })}
