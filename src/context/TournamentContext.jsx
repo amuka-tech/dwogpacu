@@ -348,9 +348,6 @@ export function TournamentProvider({ children }) {
     const updateFixture = (id, homeId, awayId) => {
       const f = updatedFixtures.find(x => x.id === id);
       if (f) { f.homeTeamId = homeId; f.awayTeamId = awayId; }
-      // Also update the second leg with swapped home/away
-      const leg2 = updatedFixtures.find(x => x.tieId === id);
-      if (leg2) { leg2.homeTeamId = awayId; leg2.awayTeamId = homeId; }
     };
 
     updateFixture('046', winnerA, runnerB);
@@ -358,34 +355,20 @@ export function TournamentProvider({ children }) {
     updateFixture('048', winnerC, runnerD);
     updateFixture('049', winnerD, runnerC);
 
-    // Determine winner of a two-legged tie using aggregate score.
-    // leg1Id is the first-leg fixture; the second leg has tieId === leg1Id.
-    const getAggWinner = (leg1Id, defaultName) => {
-      const leg1Fix = updatedFixtures.find(f => f.id === leg1Id);
-      const leg2Fix = updatedFixtures.find(f => f.tieId === leg1Id);
-      const res1 = results[leg1Id];
-      const res2 = leg2Fix ? results[leg2Fix.id] : null;
-
-      // Need both legs finished
-      if (!res1 || res1.homeScore === null) return defaultName;
-      if (!res2 || res2.homeScore === null) return defaultName;
-
-      // Aggregate: leg1 home team's goals across both legs
-      const leg1HomeGoals = Number(res1.homeScore) + Number(res2.awayScore);
-      const leg1AwayGoals = Number(res1.awayScore) + Number(res2.homeScore);
-
-      if (leg1HomeGoals > leg1AwayGoals) return leg1Fix?.homeTeamId || defaultName;
-      if (leg1AwayGoals > leg1HomeGoals) return leg1Fix?.awayTeamId || defaultName;
-      // Tied on aggregate — away goals rule (leg1 away = leg2 home)
-      if (Number(res1.awayScore) > Number(res2.homeScore)) return leg1Fix?.awayTeamId || defaultName;
-      return defaultName; // Still tied — would go to penalties (show placeholder)
+    const getWinner = (matchId, defaultName) => {
+      const res = results[matchId];
+      if (!res || res.homeScore === null || res.awayScore === null) return defaultName;
+      if (res.homeScore > res.awayScore) {
+        return updatedFixtures.find(f => f.id === matchId)?.homeTeamId || defaultName;
+      } else if (res.awayScore > res.homeScore) {
+        return updatedFixtures.find(f => f.id === matchId)?.awayTeamId || defaultName;
+      }
+      return defaultName;
     };
 
-    updateFixture('050', getAggWinner('046', 'WINNER QT 1'), getAggWinner('048', 'WINNER QT 3'));
-    updateFixture('051', getAggWinner('047', 'WINNER QT 2'), getAggWinner('049', 'WINNER QT 4'));
-    updateFixture('050b', getAggWinner('048', 'WINNER QT 3'), getAggWinner('046', 'WINNER QT 1'));
-    updateFixture('051b', getAggWinner('049', 'WINNER QT 4'), getAggWinner('047', 'WINNER QT 2'));
-    updateFixture('052', getAggWinner('050', 'WINNER SM 1'), getAggWinner('051', 'WINNER SM 2'));
+    updateFixture('050', getWinner('046', 'WINNER QT 1'), getWinner('048', 'WINNER QT 3'));
+    updateFixture('051', getWinner('047', 'WINNER QT 2'), getWinner('049', 'WINNER QT 4'));
+    updateFixture('052', getWinner('050', 'WINNER SM 1'), getWinner('051', 'WINNER SM 2'));
 
     return updatedFixtures;
   }, [standings, results]);
